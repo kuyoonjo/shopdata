@@ -1,0 +1,19 @@
+<div class="container-fluid" ng-show="ready">
+    <div class="list-group">
+        <a ng-repeat="part in parts track by $index"
+           href class="list-group-item" ng-click="collapse($index)">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-3"><img class="img-circle" width="100" height="100" ng-src="{{ part.image }}" /></div>
+                    <div class="col-xs-9">
+                        <label>Number:</label> {{ part.number }} <br />
+                        <label>Location:</label> {{ part.location.name }} <br />
+                        <label>To stock:</label> {{ part.qty_to_stock }} <br />
+                        <label>On hand:</label> {{ part.qty_on_hand }} <br />
+                        <label>On order:</label> {{ part.qty_on_order }}
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

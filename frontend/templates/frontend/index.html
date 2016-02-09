@@ -1,0 +1,133 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="white-translucent" />
+
+    <link rel="stylesheet" type="text/css" href="{% static "frontend/bower_components/bootstrap/dist/css/bootstrap.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "frontend/bower_components/angular-snap/angular-snap.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "frontend/css/default.css" %}" />
+
+    <meta name="msapplication-tap-highlight" content="no" />
+    <title>Shop data</title>
+</head>
+
+<body ng-app="myApp" ng-controller="mainCtrl">
+
+<!-- MENU -->
+<div snap-drawer style="width: 350px">
+    <div class="list-group" ng-controller="menuCtrl">
+        <div class="list-group-item text-center">Menu</div>
+
+        <a snap-close class="list-group-item" href="/#/parts">
+            <div class="row">
+                <div class="col-xs-9 text-left">
+                    <span>Parts</span>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <span class="glyphicon glyphicon-wrench"></span>
+                </div>
+            </div>
+        </a>
+
+        <a snap-close class="list-group-item" ng-if="!isAuthenticated()" href="/#/login">
+            <div class="row">
+                <div class="col-xs-9 text-left">
+                    <span>Login</span>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                </div>
+            </div>
+        </a>
+
+        <a snap-close class="list-group-item" ng-if="isAuthenticated()" href="/#/logout">
+            <div class="row">
+                <div class="col-xs-9 text-left">
+                    <span>Logout</span>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+<!-- main page -->
+<div snap-content class="content">
+    <nav class="container" ng-controller="navbarCtrol" ng-show="isMobile()">
+        <div class="container">
+            <div class="text-center" style="height: 10vh">
+                <a href snap-toggle="left"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-inverse" ng-controller="navbarCtrol" ng-show="!isMobile()">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Shop Data</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
+                <li ng-class="{ active: isActive('/parts')}"><a href="#/parts">Parts</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-if="!isAuthenticated()"><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li ng-if="!isAuthenticated()"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+
+                <li ng-if="isAuthenticated()"><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span> Logout <span ng-bind="showUser()"></span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div ui-view></div>
+
+</div>
+
+<!-- script -->
+
+<script src="{% static "frontend/bower_components/angular/angular.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/angular-ui-router/release/angular-ui-router.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/angular-animate/angular-animate.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/angular-messages/angular-messages.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/angular-resource/angular-resource.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/angular-route/angular-route.min.js" %}"></script>
+
+<script src="{% static "frontend/bower_components/satellizer/satellizer.min.js" %}"></script>
+
+<script src="{% static "frontend/bower_components/snapjs/snap.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/angular-snap/angular-snap.min.js" %}"></script>
+
+
+<script src="{% static "frontend/js/functions.js" %}"></script>
+
+<script>
+    var staticPath = "{% static "frontend" %}/";
+    var app = angular.module('myApp', [
+        'ui.router',
+        'ui.bootstrap',
+        'ngResource',
+        'ngMessages',
+        'ngAnimate',
+        'ngRoute',
+        'satellizer',
+        'snap'
+    ]);
+</script>
+
+<script src="{% static "frontend/js/filter.js" %}"></script>
+<script src="{% static "frontend/js/service.js" %}"></script>
+<script src="{% static "frontend/js/directive.js" %}"></script>
+<script src="{% static "frontend/js/config.js" %}"></script>
+<script src="{% static "frontend/js/controller.js" %}"></script>
+
+</body>
+</html>
