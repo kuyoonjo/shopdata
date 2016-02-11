@@ -1,10 +1,11 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from shopdata import views
 
 urlpatterns = [
     url(r'^accounts/profile/$', views.ProfileView.as_view()),
     url(r'^accounts/signup/$', views.SignupView.as_view()),
+    url(r'^accounts/login/', include('rest_social_auth.urls_jwt')),
     url(r'^accounts/login/$', 'rest_framework_jwt.views.obtain_jwt_token'),
     url(r'^accounts/verify/$', 'rest_framework_jwt.views.verify_jwt_token'),
 

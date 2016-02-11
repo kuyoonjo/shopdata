@@ -46,11 +46,11 @@ app
         $authProvider.authToken = 'JWT';
 
         // Facebook
-        /*
+
         $authProvider.facebook({
-            clientId: '622746604531284',
-            url: '/api/login/social/jwt/facebook'
-        }); */
+            clientId: '1008467062559053',
+            url: '/api/accounts/login/social/jwt/facebook'
+        });
 
         function skipIfLoggedIn($q, $auth) {
             var deferred = $q.defer();
