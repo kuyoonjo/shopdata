@@ -27,6 +27,14 @@ app
                     skipIfLoggedIn: skipIfLoggedIn
                 }
             })
+            .state('partsLocations', {
+                url: '/partsLocations',
+                templateUrl: staticPath + 'partials/partsLocations.html',
+                controller: 'partsLocationsCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
             .state('parts', {
                 url: '/parts',
                 templateUrl: staticPath + 'partials/parts.html',

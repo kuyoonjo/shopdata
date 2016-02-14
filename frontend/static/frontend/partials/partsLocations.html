@@ -1,0 +1,13 @@
+<div class="container-fluid" ng-show="ready">
+    <div class="list-group">
+        <a ng-repeat="location in locations track by $index"
+           href class="list-group-item">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-3">{{ location.name }}</div>
+                    <div class="col-xs-9">{{ location.description }}</div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

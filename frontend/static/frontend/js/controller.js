@@ -5,17 +5,19 @@ app
                 $scope.$auth = $auth;
                 $log.debug('success logged in', res);
 
-                $scope.showUser = function() {
-                    if($auth.getPayload().first_name && $auth.getPayload().last_name) {
-                        return $auth.getPayload().first_name + ' ' + $auth.getPayload().last_name;
-                    } else if($auth.getPayload().email) {
-                        return $auth.getPayload().email;
-                    } else {
-                        return $auth.getPayload().username;
-                    }
-                }
             });
         }
+
+        $scope.showUser = function() {
+            if($auth.getPayload().first_name && $auth.getPayload().last_name) {
+                return $auth.getPayload().first_name + ' ' + $auth.getPayload().last_name;
+            } else if($auth.getPayload().email) {
+                return $auth.getPayload().email;
+            } else {
+                return $auth.getPayload().username;
+            }
+        };
+
         $scope.isAuthenticated = function() {
             return $auth.isAuthenticated();
         };
@@ -103,13 +105,27 @@ app
                 });
         };
     })
-    .controller('partsCtrl', function($scope, $http, $log) {
-        $http.get('/api/parts/').then(function(res) {
-            $log.debug(res);
-            $scope.ready = true;
-            $scope.parts = res.data;
+    .controller('partsCtrl', function($scope, $http, $log, Part, PartLocation, OnOrder) {
+        $scope.locations = PartLocation.query(function() {
+            $scope.selected = $scope.locations[0].name;
+            $scope.parts = Part.query(function() {
+                $scope.ready = true;
+                $scope.noImage = staticPath + '/images/No_image_available.png';
+                $scope.sending = false;
 
-        }, function(res) {
-            $log.error('Failed to load parts!', res);
-        })
+                $scope.takeOne = function(part) {
+                    $scope.sending = true;
+                    part.qty_on_hand --;
+                    part.$update(function() {
+                        var onOrder = new OnOrder();
+                        onOrder.part = part.id;
+                        onOrder.qty = 1;
+                        onOrder.$save(function(){
+                            alert('success');
+                            $scope.sending = false;
+                        });
+                    });
+                }
+            });
+        });
     });

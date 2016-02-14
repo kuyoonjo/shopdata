@@ -31,7 +31,7 @@ class PartLocation(models.Model):
         return str(self.id) + ' - ' + self.name
 
 class Part(models.Model):
-    number = models.CharField(max_length=254)
+    number = models.CharField(max_length=254, unique=True)
     alternate_number = models.CharField(max_length=254, blank=True)
     vendor = models.ForeignKey(Vendor)
     description = models.TextField(blank=True)

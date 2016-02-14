@@ -9,12 +9,14 @@ urlpatterns = [
     url(r'^accounts/login/$', 'rest_framework_jwt.views.obtain_jwt_token'),
     url(r'^accounts/verify/$', 'rest_framework_jwt.views.verify_jwt_token'),
 
-    url(r'vendors/$', views.VendorListView.as_view()),
+    url(r'^vendors/$', views.VendorListView.as_view()),
     url(r'^vendors/(?P<pk>[0-9]+)/$', views.VendorDetailView.as_view()),
-    url(r'parts/locations/$', views.PartLocationListView.as_view()),
+    url(r'^parts/locations/$', views.PartLocationListView.as_view()),
     url(r'^parts/locations/(?P<pk>[0-9]+)/$', views.PartLocationDetailView.as_view()),
-    url(r'parts/$', views.PartListView.as_view()),
+    url(r'^parts/$', views.PartListView.as_view()),
     url(r'^parts/(?P<pk>[0-9]+)/$', views.PartDetailView.as_view()),
+    url(r'^onOrders/$', views.OnOrderListView.as_view()),
+    url(r'^onOrders/(?P<pk>[0-9]+)/$', views.OnOrderDetailView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

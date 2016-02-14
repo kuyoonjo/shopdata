@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from shopdata.models import Vendor, PartLocation, Part
+from shopdata.models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -26,7 +26,16 @@ class PartLocationSerializer(serializers.ModelSerializer):
         model = PartLocation
 
 class PartSerializer(serializers.ModelSerializer):
-    vendor = VendorSerializer()
-    location = PartLocationSerializer()
+    vendor = VendorSerializer(read_only=True)
+    location = PartLocationSerializer(read_only=True)
     class Meta:
         model = Part
+
+class OnOrderSerializer(serializers.ModelSerializer):
+    part = PartSerializer()
+    class Meta:
+        model = OnOrder
+
+class OnOrderCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OnOrder
