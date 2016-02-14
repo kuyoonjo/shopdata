@@ -117,13 +117,9 @@ app
                     $scope.sending = true;
                     part.qty_on_hand --;
                     part.$update(function() {
-                        var onOrder = new OnOrder();
-                        onOrder.part = part.id;
-                        onOrder.qty = 1;
-                        onOrder.$save(function(){
-                            alert('success');
-                            $scope.sending = false;
-                        });
+                        alert('success');
+                        $scope.sending = false;
+                        part.isCollapsed = !part.isCollapsed;
                     });
                 }
             });
