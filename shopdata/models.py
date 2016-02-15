@@ -60,7 +60,7 @@ class Vehicle(models.Model):
     year = models.IntegerField()
     serial = models.CharField(max_length=50)
     hours = models.FloatField()
-    next_interval = models.CharField(max_length=1, choices=[
+    next_interval = models.CharField(max_length=10, choices=[
         ('250', '250'),
         ('500', '500'),
         ('750', '750'),
@@ -90,6 +90,8 @@ class PartsUsed(models.Model):
     work_order = models.ForeignKey(WorkOrder)
     part = models.ForeignKey(Part)
     qty = models.IntegerField()
+
+
 
 
 
