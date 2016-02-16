@@ -92,6 +92,7 @@ class WorkOrder(models.Model):
     datetime = models.DateTimeField()
     active = models.BooleanField()
     who_worked = models.ManyToManyField(Human)
+    close_date = models.DateTimeField(null=True, blank=True)
 
 class PartsUsed(models.Model):
     work_order = models.ForeignKey(WorkOrder)

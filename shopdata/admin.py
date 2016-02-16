@@ -38,7 +38,7 @@ class WorkOrderAdmin(admin.ModelAdmin):
     list_display = ('vehicle', 'hours', 'datetime', 'active')
     list_filter = ('vehicle', 'active')
     fieldsets = [
-        (None, {'fields': ['vehicle', 'hours', 'datetime', 'active']}),
+        (None, {'fields': ['vehicle', 'hours', 'datetime', 'active', 'close_date']}),
         ('Details', {'fields': ['problem', 'solution']}),
         ('Who Worked', {'fields': ['who_worked']})
     ]
