@@ -34,7 +34,7 @@ class Part(models.Model):
     number = models.CharField(max_length=254, unique=True)
     alternate_number = models.CharField(max_length=254, blank=True)
     vendor = models.ForeignKey(Vendor)
-    description = models.TextField(blank=True)
+    description = models.CharField(max_length=254, blank=True)
     used_on = models.CharField(max_length=254, blank=True)
     price = models.FloatField()
     qty_to_stock = models.IntegerField()
@@ -50,7 +50,9 @@ class Part(models.Model):
 
 class OnOrder(models.Model):
     part = models.ForeignKey(Part)
+    vendor = models.ForeignKey(Vendor)
     qty = models.IntegerField()
+    datetime = models.DateTimeField(auto_now_add=True)
 
 
 
@@ -73,6 +75,10 @@ class Vehicle(models.Model):
     ])
     active = models.BooleanField()
     note = models.TextField()
+    interval_hours_due = models.FloatField()
+
+    def __unicode__(self):
+        return str(self.id) + ' - ' + self.make + ' - ' + self.model
 
 class WorkOrder(models.Model):
     problem = models.TextField()
@@ -81,10 +87,7 @@ class WorkOrder(models.Model):
     hours = models.FloatField()
     datetime = models.DateTimeField()
     active = models.BooleanField()
-
-class WhoWorked(models.Model):
-    work_order = models.ForeignKey(WorkOrder)
-    human = models.ForeignKey(Human)
+    who_worked = models.ManyToManyField(Human)
 
 class PartsUsed(models.Model):
     work_order = models.ForeignKey(WorkOrder)

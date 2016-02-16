@@ -28,14 +28,21 @@ class VehicleAdmin(admin.ModelAdmin):
     list_display = ('id', 'make', 'model', 'active')
     list_filter = ('make', 'active')
 
+
+class PartsUsedInline(admin.StackedInline):
+    model = PartsUsed
+    extra = 1
+
 @admin.register(WorkOrder)
 class WorkOrderAdmin(admin.ModelAdmin):
     list_display = ('vehicle', 'hours', 'datetime', 'active')
     list_filter = ('vehicle', 'active')
-
-@admin.register(WhoWorked)
-class WhoWorkedAdmin(admin.ModelAdmin):
-    list_display = ('work_order', 'human')
+    fieldsets = [
+        (None, {'fields': ['vehicle', 'hours', 'datetime', 'active']}),
+        ('Details', {'fields': ['problem', 'solution']}),
+        ('Who Worked', {'fields': ['who_worked']})
+    ]
+    inlines = [PartsUsedInline]
 
 @admin.register(PartsUsed)
 class PartsUsedAdmin(admin.ModelAdmin):

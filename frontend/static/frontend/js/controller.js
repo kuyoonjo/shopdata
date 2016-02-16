@@ -107,6 +107,9 @@ app
     })
     .controller('partsCtrl', function($scope, $http, $log, Part, PartLocation, OnOrder) {
         $scope.locations = PartLocation.query(function() {
+            $scope.locations.unshift({
+                name: 'All'
+            });
             $scope.selected = $scope.locations[0].name;
             $scope.parts = Part.query(function() {
                 $scope.ready = true;

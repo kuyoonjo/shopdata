@@ -42,6 +42,14 @@ app
                 resolve: {
                     loginRequired: loginRequired
                 }
+            })
+            .state('worker_order', {
+                url: '/worker_order',
+                templateUrl: staticPath + 'partials/worker_order.html',
+                controller: 'workerOrderCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
             });
 
         $urlRouterProvider.otherwise('/');
