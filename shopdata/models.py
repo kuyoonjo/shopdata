@@ -76,6 +76,10 @@ class Vehicle(models.Model):
     active = models.BooleanField()
     note = models.TextField()
     interval_hours_due = models.FloatField()
+    engine_make  = models.CharField(max_length=50)
+    engine_model = models.CharField(max_length=50)
+    engine_serial = models.CharField(max_length=50)
+    engine_note = models.CharField(max_length=50)
 
     def __unicode__(self):
         return str(self.id) + ' - ' + self.make + ' - ' + self.model
