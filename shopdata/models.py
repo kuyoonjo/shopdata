@@ -83,7 +83,7 @@ class Vehicle(models.Model):
 class WorkOrder(models.Model):
     problem = models.TextField()
     solution = models.TextField()
-    vehicle = models.ForeignKey(Vehicle)
+    vehicle = models.ForeignKey(Vehicle, related_name='work_orders')
     hours = models.FloatField()
     datetime = models.DateTimeField()
     active = models.BooleanField()

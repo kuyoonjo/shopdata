@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^parts/(?P<pk>[0-9]+)/$', views.PartDetailView.as_view()),
     url(r'^onOrders/$', views.OnOrderListView.as_view()),
     url(r'^onOrders/(?P<pk>[0-9]+)/$', views.OnOrderDetailView.as_view()),
+    url(r'^vehicles/$', views.VehicleListView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

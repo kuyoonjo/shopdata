@@ -25,4 +25,13 @@ app
         }, {
             stripTrailingSlashes: false
         });
+    })
+    .factory('Vehicle', function($resource) {
+        return $resource('/api/vehicles/:id/', { id: '@id' }, {
+            update: {
+                method: 'PUT' // this method issues a PUT request
+            }
+        }, {
+            stripTrailingSlashes: false
+        });
     });

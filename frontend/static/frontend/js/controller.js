@@ -105,7 +105,7 @@ app
                 });
         };
     })
-    .controller('partsCtrl', function($scope, $http, $log, Part, PartLocation, OnOrder) {
+    .controller('partsCtrl', function($scope, $http, $log, Part, PartLocation) {
         $scope.locations = PartLocation.query(function() {
             $scope.locations.unshift({
                 name: 'All'
@@ -126,5 +126,10 @@ app
                     });
                 }
             });
+        });
+    })
+    .controller('vehiclesCtrl', function($scope, $http, $log, Vehicle) {
+        $scope.vehicles = Vehicle.query(function() {
+            $scope.ready = true;
         });
     });

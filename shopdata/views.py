@@ -53,3 +53,7 @@ class OnOrderListView(generics.ListCreateAPIView):
 class OnOrderDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OnOrder.objects.all()
     serializer_class = OnOrderSerializer
+
+class VehicleListView(generics.ListAPIView):
+    queryset = Vehicle.objects.all()
+    serializer_class = VehicleSerializer

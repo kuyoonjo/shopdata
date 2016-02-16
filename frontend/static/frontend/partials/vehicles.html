@@ -1,0 +1,25 @@
+<div class="container-fluid" ng-show="ready">
+    <!-- vehicle_id 	hours	next_interval	hours_due	hours_out	work_orders -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Vehicle Id</th>
+            <th>Hours</th>
+            <th>Next Interval</th>
+            <th>Hours Due</th>
+            <th>Hours Out</th>
+            <th>Work Orders</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="vehicle in vehicles">
+            <td>{{ vehicle.id }}</td>
+            <td>{{ vehicle.hours }}</td>
+            <td>{{ vehicle.next_interval }}</td>
+            <td>{{ vehicle.interval_hours_due }}</td>
+            <td>{{ vehicle.interval_hours_due - vehicle.hours }}</td>
+            <td>{{ vehicle.work_orders.length }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

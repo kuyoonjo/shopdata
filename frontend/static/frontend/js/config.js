@@ -43,10 +43,10 @@ app
                     loginRequired: loginRequired
                 }
             })
-            .state('worker_order', {
-                url: '/worker_order',
-                templateUrl: staticPath + 'partials/worker_order.html',
-                controller: 'workerOrderCtrl',
+            .state('vehicles', {
+                url: '/vehicles',
+                templateUrl: staticPath + 'partials/vehicles.html',
+                controller: 'vehiclesCtrl',
                 resolve: {
                     loginRequired: loginRequired
                 }
