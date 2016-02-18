@@ -95,11 +95,11 @@ class WorkOrder(models.Model):
     active = models.BooleanField()
     who_worked = models.ManyToManyField(Human)
     close_date = models.DateTimeField(null=True, blank=True)
-    parts_used = models.TextField()
+    parts_used = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
-            number = int(time.strftime("%d%m%Y") + '001')
+            number = int(time.strftime("%m%d%Y") + '001')
             while WorkOrder.objects.filter(number=number).count() > 0:
                 number += 1;
             self.number=number
