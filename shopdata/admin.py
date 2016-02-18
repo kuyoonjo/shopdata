@@ -35,8 +35,8 @@ class WorkOrderAdmin(admin.ModelAdmin):
     list_filter = ('vehicle', 'active')
     readonly_fields = ('number',)
     fieldsets = [
-        (None, {'fields': ['number', 'vehicle', 'hours', 'datetime', 'active', 'close_date', 'parts_used']}),
-        ('Details', {'fields': ['problem', 'solution']}),
+        (None, {'fields': ['number', 'vehicle', 'hours', 'datetime', 'active', 'close_date']}),
+        ('Details', {'fields': ['problem', 'solution', 'parts_used']}),
         ('Who Worked', {'fields': ['who_worked']}),
     ]
 
