@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+import time
 
 class Human(AbstractUser):
     phone_number = models.CharField(blank=True, max_length=50)
@@ -85,6 +86,7 @@ class Vehicle(models.Model):
         return str(self.id) + ' - ' + self.make + ' - ' + self.model
 
 class WorkOrder(models.Model):
+    number = models.IntegerField()
     problem = models.TextField()
     solution = models.TextField()
     vehicle = models.ForeignKey(Vehicle, related_name='work_orders')
@@ -93,11 +95,16 @@ class WorkOrder(models.Model):
     active = models.BooleanField()
     who_worked = models.ManyToManyField(Human)
     close_date = models.DateTimeField(null=True, blank=True)
+    parts_used = models.TextField()
 
-class PartsUsed(models.Model):
-    work_order = models.ForeignKey(WorkOrder)
-    part = models.ForeignKey(Part)
-    qty = models.IntegerField()
+    def save(self, *args, **kwargs):
+        if not self.id:
+            number = int(time.strftime("%d%m%Y") + '001')
+            while WorkOrder.objects.filter(number=number).count() > 0:
+                number += 1;
+            self.number=number
+        super(WorkOrder, self).save(*args,**kwargs)
+
 
 
 

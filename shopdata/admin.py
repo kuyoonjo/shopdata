@@ -29,21 +29,14 @@ class VehicleAdmin(admin.ModelAdmin):
     list_filter = ('make', 'active')
 
 
-class PartsUsedInline(admin.StackedInline):
-    model = PartsUsed
-    extra = 1
-
 @admin.register(WorkOrder)
 class WorkOrderAdmin(admin.ModelAdmin):
-    list_display = ('vehicle', 'hours', 'datetime', 'active')
+    list_display = ('number', 'vehicle', 'hours', 'datetime', 'active')
     list_filter = ('vehicle', 'active')
+    readonly_fields = ('number',)
     fieldsets = [
-        (None, {'fields': ['vehicle', 'hours', 'datetime', 'active', 'close_date']}),
+        (None, {'fields': ['number', 'vehicle', 'hours', 'datetime', 'active', 'close_date', 'parts_used']}),
         ('Details', {'fields': ['problem', 'solution']}),
-        ('Who Worked', {'fields': ['who_worked']})
+        ('Who Worked', {'fields': ['who_worked']}),
     ]
-    inlines = [PartsUsedInline]
 
-@admin.register(PartsUsed)
-class PartsUsedAdmin(admin.ModelAdmin):
-    list_display = ('work_order', 'part', 'qty')
