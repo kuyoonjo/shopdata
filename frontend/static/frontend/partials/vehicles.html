@@ -3,7 +3,7 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Vehicle Id</th>
+            <th>Vehicle Model</th>
             <th>Hours</th>
             <th>Next Interval</th>
             <th>Hours Due</th>
@@ -12,8 +12,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="vehicle in vehicles">
-            <td>{{ vehicle.id }}</td>
+        <tr ng-repeat="vehicle in vehicles" ng-show="vehicle.dashboard">
+            <td>{{ vehicle.model }}</td>
             <td>{{ vehicle.hours }}</td>
             <td>{{ vehicle.next_interval }}</td>
             <td>{{ vehicle.interval_hours_due }}</td>

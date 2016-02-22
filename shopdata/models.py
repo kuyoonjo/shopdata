@@ -81,6 +81,7 @@ class Vehicle(models.Model):
     engine_model = models.CharField(max_length=50)
     engine_serial = models.CharField(max_length=50)
     engine_note = models.CharField(max_length=50)
+    dashboard = models.BooleanField(default=True)
 
     def __unicode__(self):
         return str(self.id) + ' - ' + self.make + ' - ' + self.model
