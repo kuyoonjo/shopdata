@@ -57,3 +57,14 @@ class OnOrderDetailView(generics.RetrieveUpdateDestroyAPIView):
 class VehicleListView(generics.ListAPIView):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
+	
+class StudentListView(generics.ListCreateAPIView):
+	queryset = Student.objects.all() # this one queries all.
+	# queryset = Student.objects.filter(name='...') // you can do query condition here.
+	serializer_class = StudentSerializer
+	
+class StudentDetailView(generics.RetrieveUpdateDestroyAPIView):
+	queryset = Student.objects.all() # this one queries all.
+	# queryset = Student.objects.filter(name='...') // you can do query condition here.
+	serializer_class = StudentSerializer
+

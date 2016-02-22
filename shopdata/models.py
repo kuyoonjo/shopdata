@@ -105,7 +105,8 @@ class WorkOrder(models.Model):
             self.number=number
         super(WorkOrder, self).save(*args,**kwargs)
 
-
+class Student(models.Model):
+	name = models.CharField(max_length=50)
 
 
 

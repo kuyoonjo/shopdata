@@ -44,3 +44,7 @@ class VehicleSerializer(serializers.ModelSerializer):
     work_orders = serializers.PrimaryKeyRelatedField(many=True, queryset=WorkOrder.objects.all())
     class Meta:
         model = Vehicle
+		
+class StudentSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Student
