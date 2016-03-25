@@ -40,7 +40,13 @@ class OnOrderCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = OnOrder
 
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+
 class VehicleSerializer(serializers.ModelSerializer):
     work_orders = serializers.PrimaryKeyRelatedField(many=True, queryset=WorkOrder.objects.all())
+    department = DepartmentSerializer(read_only=True)
     class Meta:
         model = Vehicle
+

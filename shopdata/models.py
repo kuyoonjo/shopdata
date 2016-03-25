@@ -55,7 +55,15 @@ class OnOrder(models.Model):
     qty = models.IntegerField()
     datetime = models.DateTimeField(auto_now_add=True)
 
+class Department(models.Model):
+    name = models.CharField(max_length=50)
+    number = models.CharField(max_length=50, blank=True)
+    note = models.TextField()
 
+    def __unicode__(self):
+        if(self.accoutNumber):
+            return self.name + ' - ' + self.number
+        return self.name
 
 class Vehicle(models.Model):
     make = models.CharField(max_length=50)
@@ -81,6 +89,7 @@ class Vehicle(models.Model):
     engine_model = models.CharField(max_length=50)
     engine_serial = models.CharField(max_length=50)
     engine_note = models.CharField(max_length=50)
+    department = models.ForeignKey(Department, blank=True, null=True)
 
     def __unicode__(self):
         return str(self.id) + ' - ' + self.make + ' - ' + self.model

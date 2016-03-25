@@ -40,3 +40,6 @@ class WorkOrderAdmin(admin.ModelAdmin):
         ('Who Worked', {'fields': ['who_worked']}),
     ]
 
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'number')
