@@ -61,7 +61,7 @@ class Department(models.Model):
     note = models.TextField()
 
     def __unicode__(self):
-        if(self.accoutNumber):
+        if(self.number):
             return self.name + ' - ' + self.number
         return self.name
 
