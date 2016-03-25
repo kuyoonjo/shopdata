@@ -9,6 +9,7 @@
             <th>Hours Due</th>
             <th>Hours Out</th>
             <th>Work Orders</th>
+            <th>Department</th>
         </tr>
         </thead>
         <tbody>
@@ -19,6 +20,7 @@
             <td>{{ vehicle.interval_hours_due }}</td>
             <td>{{ vehicle.interval_hours_due - vehicle.hours }}</td>
             <td>{{ vehicle.work_orders.length }}</td>
+            <td>{{ vehicle.department.name || '-' }}</td>
         </tr>
         </tbody>
     </table>
