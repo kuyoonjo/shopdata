@@ -105,7 +105,7 @@ app
                 });
         };
     })
-    .controller('partsCtrl', function($scope, $http, $log, Part, PartLocation) {
+    .controller('partsCtrl', function($scope, $http, $filter, $log, Part, PartLocation) {
         $scope.locations = PartLocation.query(function() {
             $scope.locations.unshift({
                 name: 'All'
@@ -126,6 +126,10 @@ app
                     });
                 }
             });
+
+            $scope.getNumberOfParts = function(parts, selected) {
+                return $filter('filter')(parts, selected == 'All' ? '' : {location: {name: selected}}).length
+            }
         });
     })
     .controller('vehiclesCtrl', function($scope, $http, $log, Vehicle) {
