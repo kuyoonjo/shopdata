@@ -89,6 +89,7 @@ class Vehicle(models.Model):
     engine_model = models.CharField(max_length=50)
     engine_serial = models.CharField(max_length=50)
     engine_note = models.CharField(max_length=50)
+    dashboard = models.BooleanField()
     department = models.ForeignKey(Department, blank=True, null=True)
 
     def __unicode__(self):

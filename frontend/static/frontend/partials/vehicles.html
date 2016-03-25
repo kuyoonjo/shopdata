@@ -13,7 +13,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="vehicle in vehicles">
+        <tr ng-repeat="vehicle in vehicles" ng-if="vehicle.dashboard">
             <td>{{ vehicle.model }}</td>
             <td>{{ vehicle.hours }}</td>
             <td>{{ vehicle.next_interval }}</td>
