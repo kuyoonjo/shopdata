@@ -39,6 +39,10 @@ class WorkOrderAdmin(admin.ModelAdmin):
         ('Details', {'fields': ['problem', 'solution', 'parts_used']}),
         ('Who Worked', {'fields': ['who_worked']}),
     ]
+	
+@admin.register(Student)
+class StudentAdmin(admin.ModelAdmin):
+	list_display = ('name', )
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
