@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-show="ready">
+<div class="container-fluid" ng-if="ready">
     <!-- vehicle_id 	hours	next_interval	hours_due	hours_out	work_orders -->
     <table class="table table-striped">
         <thead>
@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="vehicle in vehicles" ng-show="vehicle.dashboard">
+        <tr ng-repeat="vehicle in vehicles">
             <td>{{ vehicle.model }}</td>
             <td>{{ vehicle.hours }}</td>
             <td>{{ vehicle.next_interval }}</td>
