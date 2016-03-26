@@ -13,7 +13,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="vehicle in vehicles" ng-if="vehicle.dashboard">
+        <tr ng-repeat="vehicle in vehicles | filter: {dashboard: true}">
             <td>{{ vehicle.model }}</td>
             <td>{{ vehicle.hours }}</td>
             <td>{{ vehicle.next_interval }}</td>
@@ -24,4 +24,5 @@
         </tr>
         </tbody>
     </table>
+    <div class="text-left"><a href ng-click="exportCSV(vehicles)">export .csv</a></div>
 </div>

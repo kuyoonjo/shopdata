@@ -8,6 +8,7 @@
     <hr />
     <!-- change -->
     <label>{{ getNumberOfParts(parts, selected) }} Parts:</label>
+    <div class="pull-right"><a href ng-click="exportCSV(parts, selected)">export .csv</a></div>
     <div class="list-group">
         <div ng-repeat="part in parts| filter: (selected == 'All' ? '' : {location: {name: selected}}) track by $index">
             <a href class="list-group-item" ng-click="part.isCollapsed = !part.isCollapsed"

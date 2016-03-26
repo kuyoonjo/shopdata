@@ -25,8 +25,8 @@ class OnOrder(admin.ModelAdmin):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'make', 'model', 'active')
-    list_filter = ('make', 'active')
+    list_display = ('id', 'make', 'model', 'active', 'department')
+    list_filter = ('make', 'active', 'department')
 
 
 @admin.register(WorkOrder)
@@ -43,3 +43,4 @@ class WorkOrderAdmin(admin.ModelAdmin):
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'number')
+    list_filter = ('name', 'number')

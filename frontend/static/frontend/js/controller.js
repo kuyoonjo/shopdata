@@ -105,7 +105,7 @@ app
                 });
         };
     })
-    .controller('partsCtrl', function($scope, $http, $filter, $log, Part, PartLocation) {
+    .controller('partsCtrl', function($scope, $http, $filter, $log, Part, PartLocation, FileSaver, Blob) {
         $scope.locations = PartLocation.query(function() {
             $scope.locations.unshift({
                 name: 'All'
@@ -129,11 +129,44 @@ app
 
             $scope.getNumberOfParts = function(parts, selected) {
                 return $filter('filter')(parts, selected == 'All' ? '' : {location: {name: selected}}).length
-            }
+            };
+
+            $scope.exportCSV = function(parts, selected) {
+                var ps =  $filter('filter')(parts, selected == 'All' ? '' : {location: {name: selected}});
+                var csv = json2csv(ps, ["id", "vendor.id", "location.name", "number", "alternate_number", "description", "used_on", "price", "qty_to_stock", "qty_on_hand", "qty_on_order", "image", "note", "date"]);
+                var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+                FileSaver.saveAs(data, 'parts.csv');
+            };
         });
     })
-    .controller('vehiclesCtrl', function($scope, $http, $log, Vehicle) {
+    .controller('vehiclesCtrl', function($scope, $http, $filter, $log, Vehicle, FileSaver, Blob) {
         $scope.vehicles = Vehicle.query(function() {
             $scope.ready = true;
         });
+
+        $scope.exportCSV = function(vehicles) {
+            var vs =  $filter('filter')(vehicles, {dashboard: true});
+            var csv = json2csv(vs, [
+                "id",
+                "work_orders",
+                "department.name",
+                "make",
+                "model",
+                "year",
+                "serial",
+                "hours",
+                "next_interval",
+                "active",
+                "note",
+                "interval_hours_due",
+                "engine_make",
+                "engine_model",
+                "engine_serial",
+                "engine_note",
+                "dashboard"
+            ]);
+            console.log(csv);
+            var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+            FileSaver.saveAs(data, 'vehicles.csv');
+        };
     });
