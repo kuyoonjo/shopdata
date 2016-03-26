@@ -31,6 +31,9 @@ class PartLocation(models.Model):
     def __unicode__(self):
         return str(self.id) + ' - ' + self.name
 
+    class Meta:
+        ordering = ['name']
+
 class Part(models.Model):
     number = models.CharField(max_length=254, unique=True)
     alternate_number = models.CharField(max_length=254, blank=True)

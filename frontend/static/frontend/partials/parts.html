@@ -11,7 +11,7 @@
     <div class="list-group">
         <div ng-repeat="part in parts| filter: (selected == 'All' ? '' : {location: {name: selected}}) track by $index">
             <a href class="list-group-item" ng-click="part.isCollapsed = !part.isCollapsed"
-                ng-class="{'active': part.isCollapsed}">{{ part.number }}</a>
+                ng-class="{'active': part.isCollapsed}">{{ part.number }} - {{ part.description }}</a>
             <div uib-collapse="!part.isCollapsed">
                 <div class="well">
                     <div class="row">
@@ -28,8 +28,8 @@
                             <label>To stock:</label> {{ part.qty_to_stock }} <br />
                             <label>On hand:</label> {{ part.qty_on_hand }} <br />
                             <label>On order:</label> {{ part.qty_on_order }} <br />
-                            <label>Unit Price:</label> ${{ part.price }} <br />
-                            <label>Total Price:</label> ${{ part.price * part.qty_on_hand }} <br />
+                            <label>Unit Price:</label> {{ part.price | currency }} <br />
+                            <label>Total Price:</label> {{ part.price * part.qty_on_hand | currency }} <br />
                             <label>Vendor:</label> {{ part.vendor.name }} <br />
                         </div>
                     </div>
