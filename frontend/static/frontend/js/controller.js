@@ -105,6 +105,40 @@ app
                 });
         };
     })
+    .controller('partlistsCtrl', function($scope, PartList, FileSaver, Blob) {
+        $scope.partlists = PartList.query(function() {
+            $scope.ready = true;
+        });
+
+
+        $scope.exportCSV = function(partlists) {
+            var pls = JSON.parse(JSON.stringify(partlists));
+            var maxLengthOfPartListItems = 0
+            pls.forEach(function(partlist) {
+                if(maxLengthOfPartListItems < partlist.part_list_items.length)
+                    maxLengthOfPartListItems = partlist.part_list_items.length;
+                var items = {};
+                for(var i = 0; i < partlist.part_list_items.length; i ++) {
+                    items[i.toString()] = partlist.part_list_items[i];
+                }
+                partlist.part_list_items = items;
+            });
+
+            var fields = ['id', 'name', 'note'];
+            var headers = ['id', 'name', 'note'];
+
+            for(var i = 0; i < maxLengthOfPartListItems; i ++) {
+                fields.push('part_list_items.' + i + '.part.number');
+                fields.push('part_list_items.' + i + '.quantity');
+                headers.push('part' + (i + 1));
+                headers.push('qty' + (i + 1));
+            }
+
+            var csv = json2csv(pls, fields, headers);
+            var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+            FileSaver.saveAs(data, 'partlist.csv');
+        };
+    })
     .controller('partsCtrl', function($scope, $http, $filter, $log, Part, PartLocation, FileSaver, Blob) {
         $scope.locations = PartLocation.query(function() {
             $scope.locations.unshift({

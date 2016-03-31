@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^parts/locations/(?P<pk>[0-9]+)/$', views.PartLocationDetailView.as_view()),
     url(r'^parts/$', views.PartListView.as_view()),
     url(r'^parts/(?P<pk>[0-9]+)/$', views.PartDetailView.as_view()),
+    url(r'^partlists/$', views.PartListListView.as_view()),
     url(r'^onOrders/$', views.OnOrderListView.as_view()),
     url(r'^onOrders/(?P<pk>[0-9]+)/$', views.OnOrderDetailView.as_view()),
     url(r'^vehicles/$', views.VehicleListView.as_view()),

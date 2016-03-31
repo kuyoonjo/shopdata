@@ -43,6 +43,14 @@ app
                     loginRequired: loginRequired
                 }
             })
+            .state('partlists', {
+                url: '/partlists',
+                templateUrl: staticPath + 'partials/partlists.html',
+                controller: 'partlistsCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
             .state('vehicles', {
                 url: '/vehicles',
                 templateUrl: staticPath + 'partials/vehicles.html',

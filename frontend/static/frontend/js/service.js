@@ -8,6 +8,15 @@ app
             stripTrailingSlashes: false
         });
     })
+    .factory('PartList', function($resource) {
+        return $resource('/api/partlists/:id/', { id: '@id' }, {
+            update: {
+                method: 'PUT' // this method issues a PUT request
+            }
+        }, {
+            stripTrailingSlashes: false
+        });
+    })
     .factory('PartLocation', function($resource) {
         return $resource('/api/parts/locations/:id/', { id: '@id' }, {
             update: {

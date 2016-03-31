@@ -18,7 +18,7 @@ function isMobile() {
     return check;
 }
 
-function json2csv(jsonArr, fields) {
+function json2csv(jsonArr, fields, header) {
     if(!fields) {
         fields = [];
         for (var k in jsonArr[0])
@@ -26,7 +26,12 @@ function json2csv(jsonArr, fields) {
                 fields.push(k);
     }
 
-    var csv = fields.join() + '\n';
+    var csv;
+    if(header)
+        csv = header.join() + '\n';
+    else
+        csv = fields.join() + '\n';
+
     jsonArr.forEach(function(json) {
         var row = [];
         fields.forEach(function(field) {

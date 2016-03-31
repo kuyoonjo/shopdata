@@ -19,6 +19,16 @@ class PartAdmin(admin.ModelAdmin):
     list_display = ('id', 'number', 'qty_to_stock', 'qty_on_hand', 'qty_on_order')
     list_filter = ('vendor', 'location')
 
+
+class PartListItemInline(admin.TabularInline):
+    model = PartListItem
+    extra = 0
+
+@admin.register(PartList)
+class PartListAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'note')
+    inlines = [PartListItemInline]
+
 @admin.register(OnOrder)
 class OnOrder(admin.ModelAdmin):
     list_display = ('id', 'part', 'qty')

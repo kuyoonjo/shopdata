@@ -52,6 +52,16 @@ class Part(models.Model):
     def __unicode__(self):
         return str(self.id) + ' - ' + self.number
 
+class PartList(models.Model):
+    name = models.CharField(max_length=254)
+    note = models.TextField(blank=True)
+
+class PartListItem(models.Model):
+    part = models.ForeignKey(Part)
+    quantity = models.IntegerField()
+    part_list = models.ForeignKey(PartList, related_name='part_list_items')
+
+
 class OnOrder(models.Model):
     part = models.ForeignKey(Part)
     vendor = models.ForeignKey(Vendor)

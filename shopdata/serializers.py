@@ -50,3 +50,19 @@ class VehicleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vehicle
 
+class PartListItemPartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Part
+        fields = ('number',)
+
+class PartListItemSerializer(serializers.ModelSerializer):
+    part = PartListItemPartSerializer(read_only=True)
+    class Meta:
+        model = PartListItem
+        exclude = ('id', 'part_list')
+
+class PartListSerializer(serializers.ModelSerializer):
+    part_list_items = PartListItemSerializer(many=True, read_only=True)
+    class Meta:
+        model = PartList
+
