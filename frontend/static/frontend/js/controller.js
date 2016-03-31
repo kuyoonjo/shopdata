@@ -129,8 +129,12 @@ app
 
             for(var i = 0; i < maxLengthOfPartListItems; i ++) {
                 fields.push('part_list_items.' + i + '.part.number');
+                fields.push('part_list_items.' + i + '.part.description');
+                fields.push('part_list_items.' + i + '.part.price');
                 fields.push('part_list_items.' + i + '.quantity');
                 headers.push('part' + (i + 1));
+                headers.push('desc' + (i + 1));
+                headers.push('price' + (i + 1));
                 headers.push('qty' + (i + 1));
             }
 

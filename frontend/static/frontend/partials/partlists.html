@@ -15,7 +15,8 @@
                         <div>
                             <ul class="list-group">
                                 <li ng-repeat="partlistitem in partlist.part_list_items" class="list-group-item">
-                                    <span class="badge">{{ partlistitem.quantity }}</span> {{ partlistitem.part.number }}
+                                    <span class="badge">{{ partlistitem.quantity }}</span>
+                                    {{ partlistitem.part.number }} - {{ partlistitem.part.description }} - {{ partlistitem.part.price | currency }}
                                 </li>
                             </ul>
                         </div>

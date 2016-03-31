@@ -53,7 +53,7 @@ class VehicleSerializer(serializers.ModelSerializer):
 class PartListItemPartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Part
-        fields = ('number',)
+        fields = ('number', 'description', 'price')
 
 class PartListItemSerializer(serializers.ModelSerializer):
     part = PartListItemPartSerializer(read_only=True)
