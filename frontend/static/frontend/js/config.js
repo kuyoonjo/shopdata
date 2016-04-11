@@ -37,16 +37,32 @@ app
             })
             .state('parts', {
                 url: '/parts',
-                templateUrl: staticPath + 'partials/parts.html',
+                templateUrl: staticPath + 'partials/parts/index.html',
                 controller: 'partsCtrl',
                 resolve: {
                     loginRequired: loginRequired
                 }
             })
-            .state('partlists', {
+            .state('parts.locations', {
+                url: '/locations',
+                templateUrl: staticPath + 'partials/parts/locations.html',
+                controller: 'partsLocationsCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
+            .state('parts.partlists', {
                 url: '/partlists',
-                templateUrl: staticPath + 'partials/partlists.html',
-                controller: 'partlistsCtrl',
+                templateUrl: staticPath + 'partials/parts/partlists.html',
+                controller: 'partsPartlistsCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
+            .state('parts.orders', {
+                url: '/orders',
+                templateUrl: staticPath + 'partials/parts/orders.html',
+                controller: 'partsOrdersCtrl',
                 resolve: {
                     loginRequired: loginRequired
                 }

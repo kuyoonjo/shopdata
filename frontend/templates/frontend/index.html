@@ -78,21 +78,20 @@
                 <a class="navbar-brand" href="#">Shop Data</a>
             </div>
             <ul class="nav navbar-nav">
-                <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
-                <li ng-class="{ active: isActive('/parts')}"><a href="#/parts">Parts</a></li>
-                <li ng-class="{ active: isActive('/vehicles')}"><a href="#/vehicles">Vehicles</a></li>
-                <li ng-class="{ active: isActive('/partlists')}"><a href="#/partlists">Part Lists</a></li>
+                <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
+                <li ui-sref-active="active"><a ui-sref="parts">Parts</a></li>
+                <li ui-sref-active="active"><a ui-sref="vehicles">Vehicles</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-if="!isAuthenticated()"><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li ng-if="!isAuthenticated()"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li ng-if="!isAuthenticated()"><a ui-sref="signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li ng-if="!isAuthenticated()"><a ui-sref="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 
-                <li ng-if="isAuthenticated()"><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span> Logout <span ng-bind="showUser()"></span></a></li>
+                <li ng-if="isAuthenticated()"><a ui-sref="logout"><span class="glyphicon glyphicon-log-out"></span> Logout <span ng-bind="showUser()"></span></a></li>
             </ul>
         </div>
     </nav>
 
-    <div ui-view></div>
+    <div ui-view autoscroll="true"></div>
 
 </div>
 

@@ -30,8 +30,9 @@ class PartListAdmin(admin.ModelAdmin):
     inlines = [PartListItemInline]
 
 @admin.register(OnOrder)
-class OnOrder(admin.ModelAdmin):
-    list_display = ('id', 'part', 'qty')
+class OnOrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'part', 'qty', 'vendor')
+    list_filter = ('vendor', 'part')
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):

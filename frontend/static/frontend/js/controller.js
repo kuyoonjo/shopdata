@@ -27,12 +27,9 @@ app
         };
 
     })
-    .controller('menuCtrl', function($scope, $location) {
+    .controller('menuCtrl', function($scope) {
     })
-    .controller('navbarCtrol', function($scope, $location) {
-        $scope.isActive = function (viewLocation) {
-            return viewLocation == $location.path();
-        };
+    .controller('navbarCtrol', function($scope) {
     })
     .controller('homeCtrl', function($scope, $http) {
     })
@@ -105,7 +102,10 @@ app
                 });
         };
     })
-    .controller('partlistsCtrl', function($scope, PartList, FileSaver, Blob) {
+    .controller('partsCtrl', function() {
+
+    })
+    .controller('partsPartlistsCtrl', function($scope, PartList, FileSaver, Blob) {
         $scope.partlists = PartList.query(function() {
             $scope.ready = true;
         });
@@ -143,7 +143,7 @@ app
             FileSaver.saveAs(data, 'partlist.csv');
         };
     })
-    .controller('partsCtrl', function($scope, $http, $filter, $log, Part, PartLocation, FileSaver, Blob) {
+    .controller('partsLocationsCtrl', function($scope, $http, $filter, $log, $uibModal, Part, PartLocation, OnOrder, FileSaver, Blob) {
         $scope.locations = PartLocation.query(function() {
             $scope.locations.unshift({
                 name: 'All'
@@ -162,7 +162,46 @@ app
                         $scope.sending = false;
                         part.isCollapsed = !part.isCollapsed;
                     });
-                }
+                };
+
+                $scope.order = function(part) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'order.html',
+                        controller: function ($scope, $uibModalInstance, part) {
+
+                            $scope.part = part;
+
+                            $scope.ok = function () {
+                                $uibModalInstance.close($scope.qty);
+                            };
+
+                            $scope.cancel = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'sm',
+                        resolve: {
+                            part: part
+                        }
+                    });
+
+                    modalInstance.result.then(function (qty) {
+                        var order = new OnOrder();
+                        order.part = part.id;
+                        order.vendor = part.vendor.id;
+                        order.qty = qty;
+                        order.$save(function() {
+                            part.qty_on_order += qty;
+                            part.$update(function() {
+                                alert('success');
+                                part.isCollapsed = !part.isCollapsed;
+                            })
+                        });
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+                };
             });
 
             $scope.getNumberOfParts = function(parts, selected) {
@@ -175,6 +214,13 @@ app
                 var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
                 FileSaver.saveAs(data, 'parts.csv');
             };
+        });
+    })
+    .controller('partsOrdersCtrl', function($scope, OnOrder) {
+        $scope.orders = OnOrder.query(function() {
+            $scope.ready = true;
+            $scope.noImage = staticPath + '/images/No_image_available.png';
+            console.log($scope.orders);
         });
     })
     .controller('vehiclesCtrl', function($scope, $http, $filter, $log, Vehicle, FileSaver, Blob) {
