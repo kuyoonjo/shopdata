@@ -1,0 +1,20 @@
+<div class="container-fluid" ng-if="ready">
+    <label>{{ orders.length }} Orders:</label>
+    <div class="pull-right"><a href ng-click="exportCSV(orders)">export .csv</a></div>
+    <div class="list-group">
+        <div class="list-group-item list-group-item-success clearfix">
+            <div class="col-xs-3">ID</div>
+            <div class="col-xs-3">Part</div>
+            <div class="col-xs-3">Vendor</div>
+            <div class="col-xs-3">Quantity</div>
+        </div>
+        <div ng-repeat="order in orders track by $index">
+            <div class="list-group-item clearfix">
+                <div class="col-xs-3">{{ order.id }}</div>
+                <div class="col-xs-3">{{ order.part.number }}</div>
+                <div class="col-xs-3">{{ order.part.vendor.name }}</div>
+                <div class="col-xs-3">{{ order.qty }}</div>
+            </div>
+        </div>
+    </div>
+</div>

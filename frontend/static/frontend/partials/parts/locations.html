@@ -1,0 +1,71 @@
+<div class="container-fluid" ng-if="ready">
+    <div class="form-group">
+        <label for="sel1">{{ locations.length }} locations:</label>
+        <select class="form-control" id="sel1" ng-model="selected">
+            <option ng-repeat="location in locations track by $index" value="{{ location.name }}">{{ location.name }}</option>
+        </select>
+    </div>
+    <hr />
+    <!-- change -->
+    <label>{{ getNumberOfParts(parts, selected) }} Parts:</label>
+    <div class="pull-right"><a href ng-click="exportCSV(parts, selected)">export .csv</a></div>
+    <div class="list-group">
+        <div ng-repeat="part in parts| filter: (selected == 'All' ? '' : {location: {name: selected}}) track by $index">
+            <a href class="list-group-item" ng-click="part.isCollapsed = !part.isCollapsed"
+                ng-class="{'active': part.isCollapsed}">{{ part.number }} - {{ part.description }}</a>
+            <div uib-collapse="!part.isCollapsed">
+                <div class="well">
+                    <div class="row">
+                        <div>
+                            <div class="text-center"><img class="img-circle" width="100" height="100" ng-src="{{ part.image || noImage }}" /></div>
+                            <div class="text-center">
+                                <h2>{{ part.number }}</h2>
+                                <small>{{ part.description }}</small>
+                            </div>
+                            <div class="text-center">
+                                <button ng-disabled="sending || !part.qty_on_hand" ng-click="takeOne(part)" class="btn btn-warning" style="width: 80px">Take one</button>
+                                <button ng-click="order(part)" class="btn btn-warning" style="width: 80px">Order</button>
+
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="text-center">
+                            <label>To stock:</label> {{ part.qty_to_stock }} <br />
+                            <label>On hand:</label> {{ part.qty_on_hand }} <br />
+                            <label>On order:</label> {{ part.qty_on_order }} <br />
+                            <label>Unit Price:</label> {{ part.price | currency }} <br />
+                            <label>Total Price:</label> {{ part.price * part.qty_on_hand | currency }} <br />
+                            <label>Vendor:</label> {{ part.vendor.name }} <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="order.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">Order Part</h3>
+    </div>
+    <div class="modal-body">
+        <div class="text-left"><label>Number: </label> {{ part.number }}</div>
+        <div class="text-left"><label>Vendor: </label> {{ part.vendor.name }}</div>
+        <div class="text-left" ng-init="qty = 1">
+            <form name="myForm">
+                <label>Quantity: </label><input required name="qty" class="form-control" type="number" min="1" ng-model="qty"/>
+
+                <div ng-messages="myForm.qty.$error">
+                    <div ng-message="required">This is required.</div>
+                    <div ng-message="min">The minimum is 1.</div>
+                    <div ng-message="number">This field must be a number.</div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-disabled="myForm.$invalid" class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

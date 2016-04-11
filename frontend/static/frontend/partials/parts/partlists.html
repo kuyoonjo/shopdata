@@ -1,0 +1,30 @@
+<div class="container-fluid" ng-if="ready">
+    <label>{{ partlists.length }} Part Lists:</label>
+    <div class="pull-right"><a href ng-click="exportCSV(partlists)">export .csv</a></div>
+    <div class="list-group">
+        <div ng-repeat="partlist in partlists track by $index">
+            <a href class="list-group-item" ng-click="partlist.isCollapsed = !partlist.isCollapsed"
+                ng-class="{'active': partlist.isCollapsed}">{{ partlist.name }}</a>
+            <div uib-collapse="!partlist.isCollapsed">
+                <div class="well">
+                    <div class="row">
+                        <div class="text-center">
+                            {{ partlist.note }}
+                        </div>
+                        <hr />
+                        <div>
+                            <ul class="list-group">
+                                <li ng-repeat="partlistitem in partlist.part_list_items" class="list-group-item">
+                                    <span class="badge">{{ partlistitem.quantity }}</span>
+                                    {{ partlistitem.part.number }} - {{ partlistitem.part.description }} - {{ partlistitem.part.price | currency }}
+                                </li>
+                            </ul>
+                        </div>
+                        <hr />
+                        <div class="text-center"><a href ng-click="exportCSV([partlist])">export .csv</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
