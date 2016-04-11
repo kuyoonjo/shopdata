@@ -193,10 +193,7 @@ app
                         order.qty = qty;
                         order.$save(function() {
                             part.qty_on_order += qty;
-                            part.$update(function() {
-                                alert('success');
-                                part.isCollapsed = !part.isCollapsed;
-                            })
+                            alert('success');
                         });
                     }, function () {
                         $log.info('Modal dismissed at: ' + new Date());

@@ -60,5 +60,5 @@ docs/_build/
 target/
 
 # Bower
-*/bower_components
-db.sqlite3
+bower_components*
+db.sqlite3*

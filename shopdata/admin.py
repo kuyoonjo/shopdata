@@ -18,6 +18,13 @@ class PartLocationAdmin(admin.ModelAdmin):
 class PartAdmin(admin.ModelAdmin):
     list_display = ('id', 'number', 'qty_to_stock', 'qty_on_hand', 'qty_on_order')
     list_filter = ('vendor', 'location')
+    readonly_fields = ('qty_on_order',)
+
+    fieldsets = [
+        ('General', {'fields': ['number', 'alternate_number', 'vendor', 'price', 'location', 'date']}),
+        ('Quantity', {'fields': ['qty_to_stock', 'qty_on_hand', 'qty_on_order']}),
+        ('Details', {'fields': ['description', 'used_on', 'image', 'note']}),
+    ]
 
 
 class PartListItemInline(admin.TabularInline):

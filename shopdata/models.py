@@ -43,7 +43,7 @@ class Part(models.Model):
     price = models.FloatField()
     qty_to_stock = models.IntegerField()
     qty_on_hand = models.IntegerField()
-    qty_on_order = models.IntegerField()
+    #qty_on_order = models.IntegerField()
     location = models.ForeignKey(PartLocation)
     image = models.ImageField(upload_to='parts/images', null=True, blank=True)
     note = models.TextField(blank=True)
@@ -51,6 +51,14 @@ class Part(models.Model):
 
     def __unicode__(self):
         return str(self.id) + ' - ' + self.number
+
+    @property
+    def qty_on_order(self):
+        orders = OnOrder.objects.filter(part=self)
+        count = 0
+        for order in orders:
+            count += order.qty
+        return count
 
 class PartList(models.Model):
     name = models.CharField(max_length=254)
@@ -63,8 +71,8 @@ class PartListItem(models.Model):
 
 
 class OnOrder(models.Model):
-    part = models.ForeignKey(Part)
-    vendor = models.ForeignKey(Vendor)
+    part = models.ForeignKey(Part, related_name='on_orders')
+    vendor = models.ForeignKey(Vendor, related_name='on_orders')
     qty = models.IntegerField()
     datetime = models.DateTimeField(auto_now_add=True)
 
