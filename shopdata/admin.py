@@ -1,9 +1,12 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django import forms
 
 from shopdata.models import *
 
 @admin.register(Human)
-class HumanAdmin(admin.ModelAdmin):
+class HumanAdmin(UserAdmin):
     list_display = ('id', 'username', 'is_staff')
 
 @admin.register(Vendor)
