@@ -48,6 +48,9 @@ class Part(models.Model):
     image = models.ImageField(upload_to='parts/images', null=True, blank=True)
     note = models.TextField(blank=True)
     date = models.DateField()
+    book = models.ForeignKey('Book', null=True, blank=True)
+    book_page = models.CharField(max_length=50, null=True, blank=True)
+    book_item = models.CharField(max_length=50, null=True, blank=True)
 
     def __unicode__(self):
         return str(self.id) + ' - ' + self.number
@@ -135,6 +138,13 @@ class WorkOrder(models.Model):
                 number += 1;
             self.number=number
         super(WorkOrder, self).save(*args,**kwargs)
+
+class Book(models.Model):
+    number = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return str(self.number) + ' - ' + self.name
 
 
 

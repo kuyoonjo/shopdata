@@ -17,7 +17,12 @@
                 <div class="well">
                     <div class="row">
                         <div>
-                            <div class="text-center"><img class="img-circle" width="100" height="100" ng-src="{{ part.image || noImage }}" /></div>
+                            <div class="text-center" ng-if="part.image">
+                                <a href ng-click="showImage(part)"><img class="img-circle" width="100" height="100" ng-src="{{ part.image }}" /></a>
+                            </div>
+                            <div class="text-center" ng-if="!part.image">
+                                <img class="img-circle" width="100" height="100" ng-src="{{ noImage }}" />
+                            </div>
                             <div class="text-center">
                                 <h2>{{ part.number }}</h2>
                                 <small>{{ part.description }}</small>
@@ -36,6 +41,12 @@
                             <label>Unit Price:</label> {{ part.price | currency }} <br />
                             <label>Total Price:</label> {{ part.price * part.qty_on_hand | currency }} <br />
                             <label>Vendor:</label> {{ part.vendor.name }} <br />
+                            <div ng-if="part.book">
+                                <label>Book Number:</label> {{ part.book.number }} <br />
+                                <label>Book Name:</label> {{ part.book.name }} <br />
+                                <label>Book Page:</label> {{ part.book_page }} <br />
+                                <label>Book Item:</label> {{ part.book_item }} <br />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -67,5 +78,16 @@
     <div class="modal-footer">
         <button ng-disabled="myForm.$invalid" class="btn btn-primary" type="button" ng-click="ok()">OK</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="image.html">
+    <div class="modal-body text-center">
+        <img ng-src="{{ part.image }}" />
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <button ng-disabled="myForm.$invalid" class="btn btn-primary" type="button" ng-click="ok()">Close</button>
+        </div>
     </div>
 </script>

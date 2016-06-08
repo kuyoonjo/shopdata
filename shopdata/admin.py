@@ -27,6 +27,7 @@ class PartAdmin(admin.ModelAdmin):
         ('General', {'fields': ['number', 'alternate_number', 'vendor', 'price', 'location', 'date']}),
         ('Quantity', {'fields': ['qty_to_stock', 'qty_on_hand', 'qty_on_order']}),
         ('Details', {'fields': ['description', 'used_on', 'image', 'note']}),
+        ('Book', {'fields': ['book', 'book_page', 'book_item']})
     ]
 
 
@@ -63,5 +64,10 @@ class WorkOrderAdmin(admin.ModelAdmin):
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'number')
+    list_filter = ('name', 'number')
+
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'number')
     list_filter = ('name', 'number')

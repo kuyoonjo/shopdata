@@ -25,9 +25,14 @@ class PartLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartLocation
 
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+
 class PartSerializer(serializers.ModelSerializer):
     vendor = VendorSerializer(read_only=True)
     location = PartLocationSerializer(read_only=True)
+    book = BookSerializer(read_only=True)
     qty_on_order = serializers.IntegerField()
     class Meta:
         model = Part

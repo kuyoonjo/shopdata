@@ -199,6 +199,25 @@ app
                         $log.info('Modal dismissed at: ' + new Date());
                     });
                 };
+
+                $scope.showImage = function(part) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'image.html',
+                        controller: function ($scope, $uibModalInstance, part) {
+
+                            $scope.part = part;
+
+                            $scope.ok = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'lg',
+                        resolve: {
+                            part: part
+                        }
+                    });
+                };
             });
 
             $scope.getNumberOfParts = function(parts, selected) {
