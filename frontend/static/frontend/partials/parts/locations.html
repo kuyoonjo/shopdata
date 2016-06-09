@@ -29,6 +29,7 @@
                             </div>
                             <div class="text-center">
                                 <button ng-disabled="sending || !part.qty_on_hand" ng-click="takeOne(part)" class="btn btn-warning" style="width: 80px">Take one</button>
+                                <button ng-disabled="sending" ng-click="addOne(part)" class="btn btn-warning" style="width: 80px">Add one</button>
                                 <button ng-click="order(part)" class="btn btn-warning" style="width: 80px">Order</button>
 
                             </div>
@@ -47,6 +48,7 @@
                                 <label>Book Page:</label> {{ part.book_page }} <br />
                                 <label>Book Item:</label> {{ part.book_item }} <br />
                             </div>
+                            <label>Last Modified Date:</label> {{ part.date }} <br />
                         </div>
                     </div>
                 </div>

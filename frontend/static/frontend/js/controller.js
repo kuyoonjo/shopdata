@@ -157,6 +157,17 @@ app
                 $scope.takeOne = function(part) {
                     $scope.sending = true;
                     part.qty_on_hand --;
+                    part.date = $filter('date')(new Date(), 'yyyy-MM-dd');
+                    part.$update(function() {
+                        alert('success');
+                        $scope.sending = false;
+                        part.isCollapsed = !part.isCollapsed;
+                    });
+                };
+                $scope.addOne = function(part) {
+                    $scope.sending = true;
+                    part.qty_on_hand ++;
+                    part.date = $filter('date')(new Date(), 'yyyy-MM-dd');
                     part.$update(function() {
                         alert('success');
                         $scope.sending = false;

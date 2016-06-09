@@ -33,7 +33,8 @@ class PartSerializer(serializers.ModelSerializer):
     vendor = VendorSerializer(read_only=True)
     location = PartLocationSerializer(read_only=True)
     book = BookSerializer(read_only=True)
-    qty_on_order = serializers.IntegerField()
+    qty_on_order = serializers.IntegerField(read_only=True)
+    image = serializers.ImageField(read_only=True)
     class Meta:
         model = Part
 
