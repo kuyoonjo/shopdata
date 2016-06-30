@@ -42,8 +42,8 @@ class PartListAdmin(admin.ModelAdmin):
 
 @admin.register(OnOrder)
 class OnOrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'part', 'qty', 'vendor')
-    list_filter = ('vendor', 'part')
+    list_display = ('id', 'part', 'qty', 'vendor', 'user', 'datetime')
+    list_filter = ('vendor', 'part', 'user')
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):

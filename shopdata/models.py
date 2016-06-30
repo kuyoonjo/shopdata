@@ -78,6 +78,7 @@ class OnOrder(models.Model):
     vendor = models.ForeignKey(Vendor, related_name='on_orders')
     qty = models.IntegerField()
     datetime = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(Human, related_name='on_orders', null=True, blank=True)
 
 class Department(models.Model):
     name = models.CharField(max_length=50)

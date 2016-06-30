@@ -3,7 +3,7 @@ app
         if ($auth.getToken()) {
             $http.post('/api/accounts/verify/', {token: $auth.getToken()}).then(function (res) {
                 $scope.$auth = $auth;
-                $log.debug('success logged in', res);
+                $log.debug('success logged in', res, $auth.getPayload());
 
             });
         }
@@ -143,7 +143,7 @@ app
             FileSaver.saveAs(data, 'partlist.csv');
         };
     })
-    .controller('partsLocationsCtrl', function($scope, $http, $filter, $log, $uibModal, Part, PartLocation, OnOrder, FileSaver, Blob) {
+    .controller('partsLocationsCtrl', function($scope, $http, $filter, $log, $uibModal, $auth, Part, PartLocation, OnOrder, FileSaver, Blob) {
         $scope.locations = PartLocation.query(function() {
             $scope.locations.unshift({
                 name: 'All'
@@ -202,6 +202,7 @@ app
                         order.part = part.id;
                         order.vendor = part.vendor.id;
                         order.qty = qty;
+                        order.user = $auth.getPayload().user_id;
                         order.$save(function() {
                             part.qty_on_order += qty;
                             alert('success');

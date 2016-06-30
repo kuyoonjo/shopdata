@@ -40,6 +40,7 @@ class PartSerializer(serializers.ModelSerializer):
 
 class OnOrderSerializer(serializers.ModelSerializer):
     part = PartSerializer()
+    user = UserSerializer()
     class Meta:
         model = OnOrder
 
