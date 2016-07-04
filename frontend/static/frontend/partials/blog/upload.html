@@ -4,8 +4,10 @@
     </div>
     <div class="modal-body">
         <div class="row" style="height: 300px; overflow-y: scroll">
-            <div class="col-md-2" ng-repeat="image in images" style="height: 100px">
-                <img ng-class="{'image-selected': image.selected}" width="100%" ng-src="{{ image.file }}" ng-click="select(image)"/>
+            <div class="col-xs-4 col-md-2" ng-repeat="image in images" style="height: 100px">
+                <div style="padding: 2px;height: 95px;width: 100%" class="img-thumbnail text-center" ng-class="{'image-selected': image.selected}" ng-click="select(image)">
+                    <img style="max-height: 90px; max-width: 100%" ng-src="{{ image.file }}" />
+                </div>
             </div>
         </div>
         <hr />

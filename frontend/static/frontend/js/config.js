@@ -152,11 +152,32 @@ app
     })
     .config(function ($provide) {
 
-        $provide.decorator('taOptions', ['taRegisterTool', '$delegate', '$uibModal', function (taRegisterTool, taOptions, $uibModal) {
-            taRegisterTool('uploadImage', {
-                buttontext: '',
-                iconclass: "fa fa-image",
-                action: function (deferred,restoreSelection) {
+        $provide.decorator('taOptions', ['$delegate', function(taOptions){
+            // $delegate is the taOptions we are decorating
+            // here we override the default toolbars and classes specified in taOptions.
+            taOptions.forceTextAngularSanitize = true; // set false to allow the textAngular-sanitize provider to be replaced
+            taOptions.keyMappings = []; // allow customizable keyMappings for specialized key boards or languages
+            taOptions.toolbar = [
+                ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'pre', 'quote'],
+                ['bold', 'italics', 'underline', 'ul', 'ol', 'redo', 'undo', 'clear'],
+                ['justifyLeft','justifyCenter','justifyRight', 'justifyFull'],
+                ['html', 'insertImage', 'insertLink', 'wordcount', 'charcount']
+            ];
+            taOptions.classes = {
+                focussed: 'focussed',
+                toolbar: 'btn-toolbar',
+                toolbarGroup: 'btn-group',
+                toolbarButton: 'btn btn-default',
+                toolbarButtonActive: 'active',
+                disabled: 'disabled',
+                textEditor: 'form-control',
+                htmlEditor: 'form-control'
+            };
+            return taOptions; // whatever you return will be the taOptions
+        }]);
+
+        $provide.decorator('taTools', ['$delegate', '$uibModal', function (taTools, $uibModal) {
+            taTools.insertImage.action = function (deferred,restoreSelection) {
                     $uibModal.open({
                         controller: 'UploadImageModalInstance',
                         templateUrl: staticPath + 'partials/blog/upload.html'
@@ -171,9 +192,7 @@ app
                         }
                     );
                     return false;
-                }
-            });
-            taOptions.toolbar[3][1] = 'uploadImage';
-            return taOptions;
+                };
+            return taTools;
         }]);
     });

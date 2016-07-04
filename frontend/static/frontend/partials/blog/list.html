@@ -1,6 +1,6 @@
 <div class="text-right"><a ui-sref="blog.add">New Post</a> </div>
-<div ng-repeat="blog in blogs" style="padding-bottom: 10px">
+<div ng-repeat="blog in blogs | orderBy: '-datetime' " style="padding-bottom: 10px">
     <h3>{{ blog.title }}</h3>
     <div class="text-muted" style="padding-bottom: 5px;border-top: 1px solid grey">{{ blog.user.username }}, {{ blog.datetime | date }}</div>
-    <div ta-bind="text" ng-model="blog.html" ta-readonly='disabled'></div>
+    <div style="max-width: 100%" ta-bind="text" ng-model="blog.html" ta-readonly='disabled'></div>
 </div>

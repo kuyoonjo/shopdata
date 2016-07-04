@@ -4,5 +4,5 @@
 }
 
 .image-selected {
-    border: solid orange 1px;
+    border-color: orangered;
 }

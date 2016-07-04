@@ -340,8 +340,8 @@ app
         $scope.upload = function() {
             if(!$scope.file)
                 return;
-            if($scope.file.size > 1024 * 500)
-                return alert('Max size: 1 MB');
+            // if($scope.file.size > 1024 * 500)
+            //    return alert('Max size: 1 MB');
             console.log($scope.file);
             Upload.upload({
                 url: '/api/uploads/',
