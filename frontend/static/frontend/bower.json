@@ -28,6 +28,8 @@
     "bootstrap": "^3.3.6",
     "ui-select": "angular-ui-select#^0.14.2",
     "angular-sanitize": "^1.5.0",
-    "angular-file-saver": "^1.1.0"
+    "angular-file-saver": "^1.1.0",
+    "textAngular": "^1.5.1",
+    "ng-file-upload": "^12.0.4"
   }
 }

@@ -74,6 +74,30 @@ app
                 resolve: {
                     loginRequired: loginRequired
                 }
+            })
+            .state('blog', {
+                url: '/blog',
+                templateUrl: staticPath + 'partials/blog/index.html',
+                controller: 'blogCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
+            .state('blog.list', {
+                url: '/list',
+                templateUrl: staticPath + 'partials/blog/list.html',
+                controller: 'blogListCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
+            .state('blog.add', {
+                url: '/add',
+                templateUrl: staticPath + 'partials/blog/add.html',
+                controller: 'blogAddCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
             });
 
         $urlRouterProvider.otherwise('/');
@@ -125,4 +149,31 @@ app
             if(next.name != "login" && next.name != "signup")
                 $rootScope.next = next;
         });
+    })
+    .config(function ($provide) {
+
+        $provide.decorator('taOptions', ['taRegisterTool', '$delegate', '$uibModal', function (taRegisterTool, taOptions, $uibModal) {
+            taRegisterTool('uploadImage', {
+                buttontext: '',
+                iconclass: "fa fa-image",
+                action: function (deferred,restoreSelection) {
+                    $uibModal.open({
+                        controller: 'UploadImageModalInstance',
+                        templateUrl: staticPath + 'partials/blog/upload.html'
+                    }).result.then(
+                        function (result) {
+                            restoreSelection();
+                            document.execCommand('insertImage', true, result);
+                            deferred.resolve();
+                        },
+                        function () {
+                            deferred.resolve();
+                        }
+                    );
+                    return false;
+                }
+            });
+            taOptions.toolbar[3][1] = 'uploadImage';
+            return taOptions;
+        }]);
     });

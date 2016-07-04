@@ -2,7 +2,9 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from datetime import datetime
 import time
+import os
 
 class Human(AbstractUser):
     phone_number = models.CharField(blank=True, max_length=50)
@@ -147,6 +149,21 @@ class Book(models.Model):
     def __unicode__(self):
         return str(self.number) + ' - ' + self.name
 
+def get_upload_path(instance, filename):
+    return os.path.join(
+            'uploads', str(instance.user.id), instance.file_type, "{:%Y%m%d%H%M%S}_{}".format(datetime.now(), filename))
+
+class Upload(models.Model):
+    user = models.ForeignKey(Human, related_name='uploads')
+    file = models.FileField(upload_to=get_upload_path)
+    file_type = models.CharField(max_length=10)
+    datetime = models.DateTimeField(auto_now=True)
+
+class Blog(models.Model):
+    user = models.ForeignKey(Human, related_name='blog')
+    title = models.CharField(max_length=200)
+    html = models.TextField(blank=True)
+    datetime = models.DateTimeField(auto_now=True)
 
 
 

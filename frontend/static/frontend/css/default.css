@@ -2,3 +2,7 @@
     z-index: 100;
     background-color: white;
 }
+
+.image-selected {
+    border: solid orange 1px;
+}

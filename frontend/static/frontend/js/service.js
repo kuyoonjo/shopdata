@@ -43,4 +43,22 @@ app
         }, {
             stripTrailingSlashes: false
         });
+    })
+    .factory('Uploads', function($resource) {
+        return $resource('/api/uploads/:id/', { id: '@id' }, {
+            update: {
+                method: 'PUT' // this method issues a PUT request
+            }
+        }, {
+            stripTrailingSlashes: false
+        });
+    })
+    .factory('Blog', function($resource) {
+        return $resource('/api/blog/:id/', { id: '@id' }, {
+            update: {
+                method: 'PUT' // this method issues a PUT request
+            }
+        }, {
+            stripTrailingSlashes: false
+        });
     });

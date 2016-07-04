@@ -62,3 +62,38 @@ class PartListListView(generics.ListAPIView):
     queryset = PartList.objects.all()
     serializer_class = PartListSerializer
 
+class UploadListView(generics.ListCreateAPIView):
+    queryset = Upload.objects.all()
+    serializer_class = UploadSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        queryset = Upload.objects.all()
+        file_type = self.request.query_params.get('file_type', None)
+
+        if file_type is not None:
+            queryset = queryset.filter(file_type=file_type)
+
+        return queryset
+
+class UploadDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Upload.objects.all()
+    serializer_class = UploadSerializer
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+class BlogListView(generics.ListCreateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class BlogDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+

@@ -4,15 +4,13 @@
 <head>
     <meta charset="utf-8" />
 
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="white-translucent" />
+    <meta name="viewport" content="width=device-width">
 
     <link rel="stylesheet" type="text/css" href="{% static "frontend/bower_components/bootstrap/dist/css/bootstrap.min.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "frontend/bower_components/angular-snap/angular-snap.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "frontend/bower_components/font-awesome/css/font-awesome.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "frontend/bower_components/textAngular/dist/textAngular.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "frontend/css/default.css" %}" />
-
-    <meta name="msapplication-tap-highlight" content="no" />
     <title>Shop data</title>
 </head>
 
@@ -23,7 +21,7 @@
     <div class="list-group" ng-controller="menuCtrl">
         <div class="list-group-item text-center">Menu</div>
 
-        <a snap-close class="list-group-item" href="/#/parts">
+        <a snap-close class="list-group-item" ui-sref="parts">
             <div class="row">
                 <div class="col-xs-9 text-left">
                     <span>Parts</span>
@@ -34,7 +32,7 @@
             </div>
         </a>
 
-        <a snap-close class="list-group-item" href="/#/vehicles">
+        <a snap-close class="list-group-item" ui-sref="vehicles">
             <div class="row">
                 <div class="col-xs-9 text-left">
                     <span>Vehicles</span>
@@ -45,7 +43,18 @@
             </div>
         </a>
 
-        <a snap-close class="list-group-item" ng-if="!isAuthenticated()" href="/#/login">
+        <a snap-close class="list-group-item" ui-sref="blog.list">
+            <div class="row">
+                <div class="col-xs-9 text-left">
+                    <span>Blog</span>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                </div>
+            </div>
+        </a>
+
+        <a snap-close class="list-group-item" ng-if="!isAuthenticated()" ui-sref="login">
             <div class="row">
                 <div class="col-xs-9 text-left">
                     <span>Login</span>
@@ -56,7 +65,7 @@
             </div>
         </a>
 
-        <a snap-close class="list-group-item" ng-if="isAuthenticated()" href="/#/logout">
+        <a snap-close class="list-group-item" ng-if="isAuthenticated()" ui-sref="logout">
             <div class="row">
                 <div class="col-xs-9 text-left">
                     <span>Logout</span>
@@ -81,6 +90,7 @@
                 <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
                 <li ui-sref-active="active"><a ui-sref="parts">Parts</a></li>
                 <li ui-sref-active="active"><a ui-sref="vehicles">Vehicles</a></li>
+                <li ui-sref-active="active"><a ui-sref="blog.list">Blog</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li ng-if="!isAuthenticated()"><a ui-sref="signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -112,6 +122,12 @@
 <script src="{% static "frontend/bower_components/angular-snap/angular-snap.min.js" %}"></script>
 <script src="{% static "frontend/bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js" %}"></script>
 
+<script src="{% static "frontend/bower_components/textAngular/dist/textAngular-rangy.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/textAngular/dist/textAngular-sanitize.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/textAngular/dist/textAngular.min.js" %}"></script>
+
+<script src="{% static "frontend/bower_components/ng-file-upload/ng-file-upload.min.js" %}"></script>
+
 <script src="{% static "frontend/js/functions.js" %}"></script>
 
 <script>
@@ -126,7 +142,9 @@
         'ngSanitize',
         'satellizer',
         'snap',
-        'ngFileSaver'
+        'ngFileSaver',
+        'textAngular',
+        'ngFileUpload'
     ]);
 </script>
 

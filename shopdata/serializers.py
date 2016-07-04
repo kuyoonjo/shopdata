@@ -74,3 +74,13 @@ class PartListSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartList
 
+class UploadSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    class Meta:
+        model = Upload
+
+class BlogSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    class Meta:
+        model = Blog
+

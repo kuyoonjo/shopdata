@@ -1,0 +1,25 @@
+<form data-ng-submit="insert()">
+    <div class="modal-header">
+        <h4 class="modal-title"><span class="glyphicon glyphicon-picture"></span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="height: 300px; overflow-y: scroll">
+            <div class="col-md-2" ng-repeat="image in images" style="height: 100px">
+                <img ng-class="{'image-selected': image.selected}" width="100%" ng-src="{{ image.file }}" ng-click="select(image)"/>
+            </div>
+        </div>
+        <hr />
+        <div>
+            <input class="form-control" ng-model="image" />
+        </div>
+    </div>
+    <div class="modal-footer center clearfix">
+        <button data-ng-click="$dismiss()" type="button" class="btn btn-default pull-left">Cancel</button>
+        <button type="submit" data-ng-disabled="image == null || image == ''" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-picture"></span> Insert</button>
+        <button type="button" data-ngf-select name="file"
+                ngf-pattern="'image/*'" ngf-accept="'image/*'"
+                data-ngf-change="upload()"
+                data-ng-model="file" data-ngf-multiple="false"
+                class="btn btn-primary pull-right"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+    </div>
+</form>

@@ -71,3 +71,13 @@ class DepartmentAdmin(admin.ModelAdmin):
 class BookAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'number')
     list_filter = ('name', 'number')
+
+@admin.register(Upload)
+class UploadAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'file', 'datetime')
+    list_filter = ('user', 'file_type')
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'user', 'datetime')
+    list_filter = ('user',)

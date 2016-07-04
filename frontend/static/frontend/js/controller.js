@@ -251,6 +251,24 @@ app
             console.log($scope.orders);
         });
     })
+    .controller('blogCtrl', function($scope) {
+
+    })
+    .controller('blogListCtrl', function($scope, Blog) {
+        $scope.blogs = Blog.query(function() {
+            $scope.ready = true;
+        });
+    })
+    .controller('blogAddCtrl', function($scope, $state, Blog) {
+        $scope.submit = function() {
+            var blog = new Blog();
+            blog.html = $scope.html;
+            blog.title = $scope.title;
+            blog.$save(function() {
+                 $state.go('blog.list');
+            });
+        };
+    })
     .controller('vehiclesCtrl', function($scope, $http, $filter, $log, Vehicle, FileSaver, Blob) {
         $scope.vehicles = Vehicle.query(function() {
             $scope.ready = true;
@@ -280,5 +298,65 @@ app
             console.log(csv);
             var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
             FileSaver.saveAs(data, 'vehicles.csv');
+        };
+    })
+    .controller('UploadImageModalInstance', function($scope, $timeout, $uibModalInstance, Uploads, Upload){
+
+        //$scope.image = 'img/default.png';
+
+        //$scope.progress = 0;
+        //$scope.files = [];
+
+        /*$scope.upload = function(){
+            Upload.upload({
+                url: 'api/upload',
+                fields: {'dir': 'img/uploads/'},
+                file: $scope.files[0],
+                method: 'POST'
+            }).progress(function (evt) {
+                $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
+            }).success(function (data) {
+                $scope.progress = 0;
+                $scope.image = data.dir+data.filename;
+            });
+        };*/
+
+        $scope.images = Uploads.query({file_type: 'image'}, function() {
+            $scope.ready = true;
+        });
+
+        $scope.select = function(image) {
+            $scope.images.forEach(function(image) {
+                image.selected = false;
+            });
+            image.selected = true;
+            $scope.image = image.file;
+        };
+
+        $scope.insert = function(){
+            $uibModalInstance.close($scope.image);
+        };
+
+        $scope.upload = function() {
+            if(!$scope.file)
+                return;
+            if($scope.file.size > 1024 * 500)
+                return alert('Max size: 1 MB');
+            console.log($scope.file);
+            Upload.upload({
+                url: '/api/uploads/',
+                data: {file: $scope.file, file_type: 'image'}
+            }).then(function (resp) {
+                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                $timeout(function() {
+                    $scope.images = Uploads.query({file_type: 'image'});
+                    $scope.image = null;
+                });
+            });
         };
     });
