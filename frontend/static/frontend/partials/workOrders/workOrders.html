@@ -1,92 +1,70 @@
 <div class="container-fluid" ng-if="ready">
     <div class="form-group">
-        <label for="sel1">{{ departments.length }} departments:</label>
+        <label for="sel1">{{ vehicles.length }} Vehicles:</label>
         <select class="form-control" id="sel1" ng-model="selected">
-            <option ng-repeat="department in departments track by $index" value="{{ department.name }}">{{ department.name }}</option>
+            <option ng-repeat="vehicle in vehicles track by $index" value="{{ vehicle.id }}">{{ vehicle.model }}</option>
         </select>
     </div>
     <hr />
+    {{ selected }}
     <!-- change -->
-    <label>{{ getNumberOfVehicles(vehicles, selected) }} Vehicles:</label>
-    <div class="pull-right"><a href ng-click="exportCSV(vehicles, selected)">export .csv</a></div>
+    <label>{{ getNumberOfWorkOrder(workOrders, selected) }} Work Orders:</label>
+    <div class="pull-right"><a href ng-click="exportCSV(workOrders, selected)">export .csv</a></div>
     <div class="list-group">
-        <div ng-repeat="vehicle in vehicles| filter: (selected == 'All' ? '' : {department: {name: selected}}) track by $index">
-            <a href class="list-group-item" ng-click="vehicle.isCollapsed = !vehicle.isCollapsed"
-               ng-class="{'active': vehicle.isCollapsed}">{{ vehicle.model }}</a>
-            <div uib-collapse="!vehicle.isCollapsed">
+        <div ng-repeat="workOrder in workOrders| filter: (selected == 'All' ? '' : {vehicle: selected}) | filter: {active: active} track by $index">
+            <a href class="list-group-item" ng-click="workOrder.isCollapsed = !workOrder.isCollapsed"
+               ng-class="{'active': workOrder.isCollapsed}">{{ workOrder.number }}</a>
+            <div uib-collapse="!workOrder.isCollapsed">
                 <div class="well">
                     <div class="row">
-                        <div class="col-md-6">
-                            <label>Make:</label> {{ vehicle.make }} <br />
-                            <label>Model:</label> {{ vehicle.model }} <br />
-                            <label>Year:</label> {{ vehicle.year }} <br />
-                            <label>Serial:</label> {{ vehicle.serial }} <br />
-                            <label>Hours:</label> {{ vehicle.hours }} <br />
-
-                            <label>Next Interval:</label> {{ vehicle.next_interval }} <br />
-                            <label>Interval Hours Due:</label> {{ vehicle.interval_hours_due }} <br />
-                        </div>
-                        <div class="col-md-6">
-                            <label>Engine Make:</label> {{ vehicle.engine_make }} <br />
-                            <label>Engine Model:</label> {{ vehicle.engine_model }} <br />
-                            <label>Engine Serial:</label> {{ vehicle.engine_serial }} <br />
-                            <label>Engine Note:</label> {{ vehicle.engine_note }} <br />
-
-                            <label>Active:</label> {{ vehicle.active }} <br />
-                            <label>Dashboard:</label> {{ vehicle.dashboard }} <br />
-                            <label>Note:</label> {{ vehicle.note }} <br />
-                        </div>
-                        <div class="form-group">
-                            <button ng-click="editVehicle(vehicle)" class="btn btn-warning">Edit Vehicle Hours</button>
-                        </div>
-                        <br />
                         <div>
-                            <table class="table" ng-repeat="work_order in vehicle._work_orders">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th class="fit">Work Order Number:</th>
-                                        <th>{{ work_order.number }}</th>
+                                        <th>{{ workOrder.number }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in ['problem', 'solution', 'hours', 'active', 'note']">
+                                    <tr ng-repeat="item in ['vehicle', 'problem', 'solution', 'hours', 'active', 'note']">
                                         <td class="text-capitalize">{{ item }}: </td>
-                                        <td>{{ work_order[item] }}</td>
+                                        <td>{{ workOrder[item] }}</td>
                                     </tr>
                                     <tr>
                                         <td>Datetime: </td>
-                                        <td>{{ work_order.datetime | date:'medium' }}</td>
+                                        <td>{{ workOrder.datetime | date:'medium' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Close Date: </td>
-                                        <td>{{ work_order.close_date | date:'medium' }}</td>
+                                        <td>{{ workOrder.close_date | date:'medium' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Parts Used: </td>
-                                        <td>{{ work_order.parts_used }}</td>
+                                        <td>{{ workOrder.parts_used }}</td>
                                     </tr>
                                     <tr>
                                         <td>Who worked: </td>
-                                        <td>{{ work_order.who_worked }}</td>
+                                        <td>{{ workOrder.who_worked }}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td colspan="2">
-                                            <button ng-disabled="sending" ng-click="editWorkOrder(work_order)" class="btn btn-success">Edit {{ work_order.number }}</button>
+                                            <button ng-disabled="sending" ng-click="editWorkOrder({vehicles: vehicles, work_order: workOrder})" class="btn btn-success">Edit {{ workOrder.number }}</button>
                                         </td>
                                     </tr>
                                 </tfoot>
                             </table>
-
-                            <div>
-                                <button ng-click="addWorkOrder(vehicle)" class="btn btn-success">Add New Work Order</button>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+
+    <div>
+        <button ng-click="addWorkOrder({vehicles: vehicles, work_orders: workOrders})" class="btn btn-success">Add New Work Order</button>
     </div>
 </div>
 
@@ -102,6 +80,11 @@
     -->
     <div class="modal-body">
         <form name="myForm">
+            <div class="form-group">
+                <select class="form-control" ng-model="work_order.vehicle"
+                        ng-options="item.id as item.model for item in vehicles">
+                </select>
+            </div>
             <div class="form-group" ng-repeat="item in ['hours']">
                 <label>{{ item }}</label>
                 <input required name="{{ item }}" type="number" class="form-control" ng-model="work_order[item]" />

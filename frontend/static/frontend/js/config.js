@@ -92,6 +92,30 @@ app
                     loginRequired: loginRequired
                 }
             })
+            .state('workOrders', {
+                url: '/workOrders',
+                templateUrl: staticPath + 'partials/workOrders/index.html',
+                redirectTo: 'workOrders.active',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
+            .state('workOrders.active', {
+                url: '/active',
+                templateUrl: staticPath + 'partials/workOrders/workOrders.html',
+                controller: 'workOrdersActiveCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
+            .state('workOrders.closed', {
+                url: '/closed',
+                templateUrl: staticPath + 'partials/workOrders/workOrders.html',
+                controller: 'workOrdersClosedCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
             .state('blog', {
                 url: '/blog',
                 templateUrl: staticPath + 'partials/blog/index.html',

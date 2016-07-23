@@ -130,7 +130,7 @@ class WorkOrder(models.Model):
     hours = models.FloatField()
     datetime = models.DateTimeField()
     active = models.BooleanField()
-    who_worked = models.ManyToManyField(Human, null=True, blank=True)
+    who_worked = models.TextField(blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
     parts_used = models.TextField(blank=True)
 

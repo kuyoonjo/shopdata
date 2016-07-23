@@ -315,36 +315,43 @@ app
                     var work_orders = [];
                     vehicle.work_orders.forEach(function(work_order) {
                         WorkOrder.get({id: work_order}, function(work_order) {
-                            var who_worked = [];
-                            work_order.who_worked.forEach(function(user) {
-                                User.get({id: user}, function(user) {
-                                    who_worked.push(user);
-                                });
-                            });
-                            work_order._who_worked = who_worked;
+                            work_order.datetime = new Date(work_order.datetime);
+                            if(work_order.close_date)
+                                work_order.close_date = new Date(work_order.close_date);
                             work_orders.push(work_order);
                         });
                     });
-                    vehicle.work_orders = work_orders;
+                    vehicle._work_orders = work_orders;
                 });
 
-                $scope.work = function(work_order) {
-                    $scope.sending = true;
-                    var user_id = $auth.getPayload().user_id;
-                    var index = work_order.who_worked.indexOf(user_id);
-                    if(index === -1)
-                        work_order.who_worked.push(user_id);
-                    else
-                        work_order.who_worked.splice(index, 1);
-                    work_order.$update(function() {
-                        var who_worked = [];
-                        work_order.who_worked.forEach(function(user) {
-                            User.get({id: user}, function(user) {
-                                who_worked.push(user);
-                            });
+                $scope.editVehicle = function(vehicle) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'edit_vehicle.html',
+                        controller: function ($scope, $uibModalInstance, vehicle) {
+                            $scope.vehicle = vehicle;
+                            $scope._vehicle = {};
+                            $scope.ok = function () {
+                                vehicle.hours = $scope._vehicle.hours;
+                                $uibModalInstance.close(vehicle);
+                            };
+
+                            $scope.cancel = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'sm',
+                        resolve: {
+                            vehicle: vehicle
+                        }
+                    });
+
+                    modalInstance.result.then(function (vehicle) {
+                        vehicle.$update(function(vehicle) {
+                            alert('success!');
                         });
-                        work_order._who_worked = who_worked;
-                        $scope.sending = false;
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
                     });
                 };
 
@@ -356,7 +363,7 @@ app
 
                             $scope.work_order = new WorkOrder();
                             $scope.work_order.vehicle = vehicle.id;
-                            $scope.work_order.active = false;
+                            $scope.work_order.active = true;
 
                             $scope.ok = function () {
                                 $uibModalInstance.close({
@@ -377,43 +384,26 @@ app
 
                     modalInstance.result.then(function (data) {
                         data.work_order.$save(function(work_order) {
-                             data.vehicle.work_orders.push(work_order);
+                            data.vehicle._work_orders.push(work_order);
+                            work_order.datetime = new Date(work_order.datetime);
+                            if(work_order.close_date)
+                                work_order.close_date = new Date(work_order.close_date);
                         });
                     }, function () {
                         $log.info('Modal dismissed at: ' + new Date());
                     });
                 };
-                /* $scope.takeOne = function(part) {
-                    $scope.sending = true;
-                    part.qty_on_hand --;
-                    part.date = $filter('date')(new Date(), 'yyyy-MM-dd');
-                    part.$update(function() {
-                        alert('success');
-                        $scope.sending = false;
-                        part.isCollapsed = !part.isCollapsed;
-                    });
-                };
-                $scope.addOne = function(part) {
-                    $scope.sending = true;
-                    part.qty_on_hand ++;
-                    part.date = $filter('date')(new Date(), 'yyyy-MM-dd');
-                    part.$update(function() {
-                        alert('success');
-                        $scope.sending = false;
-                        part.isCollapsed = !part.isCollapsed;
-                    });
-                };
 
-                $scope.order = function(part) {
+                $scope.editWorkOrder = function(work_order) {
                     var modalInstance = $uibModal.open({
                         animation: true,
-                        templateUrl: 'order.html',
-                        controller: function ($scope, $uibModalInstance, part) {
+                        templateUrl: 'work_order.html',
+                        controller: function ($scope, $uibModalInstance, work_order) {
 
-                            $scope.part = part;
+                            $scope.work_order = work_order;
 
                             $scope.ok = function () {
-                                $uibModalInstance.close($scope.qty);
+                                $uibModalInstance.close(work_order);
                             };
 
                             $scope.cancel = function () {
@@ -422,44 +412,21 @@ app
                         },
                         size: 'sm',
                         resolve: {
-                            part: part
+                            work_order: work_order
                         }
                     });
 
-                    modalInstance.result.then(function (qty) {
-                        var order = new OnOrder();
-                        order.part = part.id;
-                        order.vendor = part.vendor.id;
-                        order.qty = qty;
-                        order.user = $auth.getPayload().user_id;
-                        order.$save(function() {
-                            part.qty_on_order += qty;
-                            alert('success');
+                    modalInstance.result.then(function (work_order) {
+                        work_order.$update(function(work_order) {
+                            work_order.datetime = new Date(work_order.datetime);
+                            if(work_order.close_date)
+                                work_order.close_date = new Date(work_order.close_date);
                         });
                     }, function () {
                         $log.info('Modal dismissed at: ' + new Date());
                     });
                 };
 
-                $scope.showImage = function(part) {
-                    var modalInstance = $uibModal.open({
-                        animation: true,
-                        templateUrl: 'image.html',
-                        controller: function ($scope, $uibModalInstance, part) {
-
-                            $scope.part = part;
-
-                            $scope.ok = function () {
-                                $uibModalInstance.dismiss('cancel');
-                            };
-                        },
-                        size: 'lg',
-                        resolve: {
-                            part: part
-                        }
-                    });
-                };
-                */
             });
 
             $scope.getNumberOfVehicles = function(vehicles, selected) {
@@ -469,6 +436,218 @@ app
             $scope.exportCSV = function(vehicles, selected) {
                 var ps =  $filter('filter')(vehicles, selected == 'All' ? '' : {department: {name: selected}});
                 var csv = json2csv(ps, ["id", "make", "model", "year", "serial", "hours", "next_interval", "interval_hours_due", "engine_make", "engine_model", "engine_serial", "engine_note", "active", "dashboard", "note"]);
+                var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+                FileSaver.saveAs(data, 'vehicles.csv');
+            };
+        });
+    })
+    .controller('workOrdersActiveCtrl', function($scope, $timeout, $http, $filter, $log, $uibModal, $auth, Vehicle, Department, WorkOrder, User, FileSaver, Blob) {
+        $scope.$auth = $auth;
+        $scope.active = true;
+        $scope.vehicles = Vehicle.query(function() {
+            $scope.vehicles.unshift({
+                id: 'All',
+                model: 'All'
+            });
+            $scope.selected = $scope.vehicles[0].id;
+            WorkOrder.query(function(workOrders) {
+                $scope.ready = true;
+                $scope.sending = false;
+                $scope.workOrders = workOrders;
+                workOrders.forEach(function(work_order) {
+                    work_order.datetime = new Date(work_order.datetime);
+                    if(work_order.close_date)
+                        work_order.close_date = new Date(work_order.close_date);
+                });
+
+                $scope.addWorkOrder = function(data) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'work_order.html',
+                        controller: function ($scope, $uibModalInstance, data) {
+                            $scope.vehicles = data.vehicles.slice(1);
+                            $scope.work_order = new WorkOrder();
+                            $scope.work_order.vehicle = $scope.vehicles[0].id;
+                            $scope.work_order.active = true;
+
+                            $scope.ok = function () {
+                                $uibModalInstance.close({
+                                    work_order: $scope.work_order,
+                                    work_orders: data.work_orders
+                                });
+                            };
+
+                            $scope.cancel = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'sm',
+                        resolve: {
+                            data: data
+                        }
+                    });
+
+                    modalInstance.result.then(function (data) {
+                        data.work_order.$save(function(work_order) {
+                            work_order.datetime = new Date(work_order.datetime);
+                            if(work_order.close_date)
+                                work_order.close_date = new Date(work_order.close_date);
+                            data.work_orders.push(work_order);
+                        });
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+
+                $scope.editWorkOrder = function(data) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'work_order.html',
+                        controller: function ($scope, $uibModalInstance, data) {
+
+                            $scope.vehicles = data.vehicles.slice(1);
+                            $scope.work_order = data.work_order;
+
+                            $scope.ok = function () {
+                                $uibModalInstance.close($scope.work_order);
+                            };
+
+                            $scope.cancel = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'sm',
+                        resolve: {
+                            data: data
+                        }
+                    });
+
+                    modalInstance.result.then(function (work_order) {
+                        work_order.$update(function(work_order) {
+                            work_order.datetime = new Date(work_order.datetime);
+                            if(work_order.close_date)
+                                work_order.close_date = new Date(work_order.close_date);
+                        });
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+
+            });
+
+            $scope.getNumberOfWorkOrder = function(workOrders, selected) {
+                return $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: selected, active: $scope.active}).length
+            };
+
+            $scope.exportCSV = function(workOrders, selected) {
+                var ps =  $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: selected, active: $scope.active});
+                var csv = json2csv(ps, ["id", "number", "problem", "solution", "vehicle", "hours", "datetime", "active", "who_worked", "close_date", "parts_used"]);
+                var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+                FileSaver.saveAs(data, 'vehicles.csv');
+            };
+        });
+    })
+    .controller('workOrdersClosedCtrl', function($scope, $timeout, $http, $filter, $log, $uibModal, $auth, Vehicle, Department, WorkOrder, User, FileSaver, Blob) {
+        $scope.$auth = $auth;
+        $scope.active = false;
+        $scope.vehicles = Vehicle.query(function() {
+            $scope.vehicles.unshift({
+                id: 'All',
+                model: 'All'
+            });
+            $scope.selected = $scope.vehicles[0].id;
+            WorkOrder.query(function(workOrders) {
+                $scope.ready = true;
+                $scope.sending = false;
+                $scope.workOrders = workOrders;
+                workOrders.forEach(function(work_order) {
+                    work_order.datetime = new Date(work_order.datetime);
+                    if(work_order.close_date)
+                        work_order.close_date = new Date(work_order.close_date);
+                });
+
+                $scope.addWorkOrder = function(data) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'work_order.html',
+                        controller: function ($scope, $uibModalInstance, data) {
+                            $scope.vehicles = data.vehicles.slice(1);
+                            $scope.work_order = new WorkOrder();
+                            $scope.work_order.vehicle = $scope.vehicles[0].id;
+                            $scope.work_order.active = true;
+
+                            $scope.ok = function () {
+                                $uibModalInstance.close({
+                                    work_order: $scope.work_order,
+                                    work_orders: data.work_orders
+                                });
+                            };
+
+                            $scope.cancel = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'sm',
+                        resolve: {
+                            data: data
+                        }
+                    });
+
+                    modalInstance.result.then(function (data) {
+                        data.work_order.$save(function(work_order) {
+                            work_order.datetime = new Date(work_order.datetime);
+                            if(work_order.close_date)
+                                work_order.close_date = new Date(work_order.close_date);
+                            data.work_orders.push(work_order);
+                        });
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+
+                $scope.editWorkOrder = function(data) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'work_order.html',
+                        controller: function ($scope, $uibModalInstance, data) {
+
+                            $scope.vehicles = data.vehicles.slice(1);
+                            $scope.work_order = data.work_order;
+
+                            $scope.ok = function () {
+                                $uibModalInstance.close($scope.work_order);
+                            };
+
+                            $scope.cancel = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'sm',
+                        resolve: {
+                            data: data
+                        }
+                    });
+
+                    modalInstance.result.then(function (work_order) {
+                        work_order.$update(function(work_order) {
+                            work_order.datetime = new Date(work_order.datetime);
+                            if(work_order.close_date)
+                                work_order.close_date = new Date(work_order.close_date);
+                        });
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+
+            });
+
+            $scope.getNumberOfWorkOrder = function(workOrders, selected) {
+                return $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: selected, active: $scope.active}).length
+            };
+
+            $scope.exportCSV = function(workOrders, selected) {
+                var ps =  $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: selected, active: $scope.active});
+                var csv = json2csv(ps, ["id", "number", "problem", "solution", "vehicle", "hours", "datetime", "active", "who_worked", "close_date", "parts_used"]);
                 var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
                 FileSaver.saveAs(data, 'vehicles.csv');
             };
