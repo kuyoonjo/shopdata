@@ -123,14 +123,14 @@ class Vehicle(models.Model):
         return str(self.id) + ' - ' + self.make + ' - ' + self.model
 
 class WorkOrder(models.Model):
-    number = models.IntegerField()
+    number = models.IntegerField(null=True, blank=True)
     problem = models.TextField()
     solution = models.TextField()
     vehicle = models.ForeignKey(Vehicle, related_name='work_orders')
     hours = models.FloatField()
     datetime = models.DateTimeField()
     active = models.BooleanField()
-    who_worked = models.ManyToManyField(Human)
+    who_worked = models.ManyToManyField(Human, null=True, blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
     parts_used = models.TextField(blank=True)
 

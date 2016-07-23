@@ -112,6 +112,7 @@
 <script src="{% static "frontend/bower_components/angular-animate/angular-animate.min.js" %}"></script>
 <script src="{% static "frontend/bower_components/angular-sanitize/angular-sanitize.min.js" %}"></script>
 <script src="{% static "frontend/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js" %}"></script>
+<script src="{% static "frontend/bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js" %}"></script>
 <script src="{% static "frontend/bower_components/angular-messages/angular-messages.min.js" %}"></script>
 <script src="{% static "frontend/bower_components/angular-resource/angular-resource.min.js" %}"></script>
 <script src="{% static "frontend/bower_components/angular-route/angular-route.min.js" %}"></script>
@@ -135,6 +136,7 @@
     var app = angular.module('myApp', [
         'ui.router',
         'ui.bootstrap',
+        'ui.bootstrap.datetimepicker',
         'ngResource',
         'ngMessages',
         'ngAnimate',

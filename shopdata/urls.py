@@ -19,10 +19,16 @@ urlpatterns = [
     url(r'^onOrders/$', views.OnOrderListView.as_view()),
     url(r'^onOrders/(?P<pk>[0-9]+)/$', views.OnOrderDetailView.as_view()),
     url(r'^vehicles/$', views.VehicleListView.as_view()),
+    url(r'^vehicles/(?P<pk>[0-9]+)/$', views.VehicleDetailView.as_view()),
     url(r'^uploads/$', views.UploadListView.as_view()),
     url(r'^uploads/(?P<pk>[0-9]+)/$', views.UploadDetailView.as_view()),
     url(r'^blog/$', views.BlogListView.as_view()),
     url(r'^blog/(?P<pk>[0-9]+)/$', views.BlogDetailView.as_view()),
+    url(r'^departments/$', views.DepartmentListView.as_view()),
+    url(r'^departments/(?P<pk>[0-9]+)/$', views.DepartmentDetailView.as_view()),
+    url(r'^workOrders/$', views.WorkOrderListView.as_view()),
+    url(r'^workOrders/(?P<pk>[0-9]+)/$', views.WorkOrderDetailView.as_view()),
+    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetailView.as_view()),
 
 ]
 

@@ -39,6 +39,7 @@ app
                 url: '/parts',
                 templateUrl: staticPath + 'partials/parts/index.html',
                 controller: 'partsCtrl',
+                redirectTo: 'parts.locations',
                 resolve: {
                     loginRequired: loginRequired
                 }
@@ -69,8 +70,24 @@ app
             })
             .state('vehicles', {
                 url: '/vehicles',
-                templateUrl: staticPath + 'partials/vehicles.html',
-                controller: 'vehiclesCtrl',
+                templateUrl: staticPath + 'partials/vehicles/index.html',
+                redirectTo: 'vehicles.dashboard',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
+            .state('vehicles.dashboard', {
+                url: '/dashboard',
+                templateUrl: staticPath + 'partials/vehicles/dashboard.html',
+                controller: 'vehiclesDashboardCtrl',
+                resolve: {
+                    loginRequired: loginRequired
+                }
+            })
+            .state('vehicles.list', {
+                url: '/list',
+                templateUrl: staticPath + 'partials/vehicles/list.html',
+                controller: 'vehiclesListCtrl',
                 resolve: {
                     loginRequired: loginRequired
                 }
@@ -195,4 +212,12 @@ app
                 };
             return taTools;
         }]);
+    })
+    .run(function ($rootScope, $state) {
+        $rootScope.$on('$stateChangeStart', function (evt, to, params) {
+            if (to.redirectTo) {
+                evt.preventDefault();
+                $state.go(to.redirectTo, params);
+            }
+        });
     });

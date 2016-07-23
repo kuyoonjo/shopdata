@@ -58,6 +58,10 @@ class VehicleListView(generics.ListAPIView):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
 
+class VehicleDetailView(generics.RetrieveUpdateAPIView):
+    queryset = Vehicle.objects.all()
+    serializer_class = VehicleSerializer
+
 class PartListListView(generics.ListAPIView):
     queryset = PartList.objects.all()
     serializer_class = PartListSerializer
@@ -96,4 +100,25 @@ class BlogDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BlogSerializer
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
+
+class DepartmentListView(generics.ListAPIView):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+
+class DepartmentDetailView(generics.RetrieveAPIView):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+
+
+class WorkOrderListView(generics.ListCreateAPIView):
+    queryset = WorkOrder.objects.all()
+    serializer_class = WorkOrderSerializer
+
+class WorkOrderDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = WorkOrder.objects.all()
+    serializer_class = WorkOrderSerializer
+
+class UserDetailView(generics.RetrieveAPIView):
+    queryset = Human.objects.all()
+    serializer_class = UserSerializer
 

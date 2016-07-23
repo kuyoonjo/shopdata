@@ -44,6 +44,33 @@ app
             stripTrailingSlashes: false
         });
     })
+    .factory('Department', function($resource) {
+        return $resource('/api/departments/:id/', { id: '@id' }, {
+            update: {
+                method: 'PUT' // this method issues a PUT request
+            }
+        }, {
+            stripTrailingSlashes: false
+        });
+    })
+    .factory('WorkOrder', function($resource) {
+        return $resource('/api/workOrders/:id/', { id: '@id' }, {
+            update: {
+                method: 'PUT' // this method issues a PUT request
+            }
+        }, {
+            stripTrailingSlashes: false
+        });
+    })
+    .factory('User', function($resource) {
+        return $resource('/api/users/:id/', { id: '@id' }, {
+            update: {
+                method: 'PUT' // this method issues a PUT request
+            }
+        }, {
+            stripTrailingSlashes: false
+        });
+    })
     .factory('Uploads', function($resource) {
         return $resource('/api/uploads/:id/', { id: '@id' }, {
             update: {

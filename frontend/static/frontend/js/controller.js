@@ -269,7 +269,7 @@ app
             });
         };
     })
-    .controller('vehiclesCtrl', function($scope, $http, $filter, $log, Vehicle, FileSaver, Blob) {
+    .controller('vehiclesDashboardCtrl', function($scope, $http, $filter, $log, Vehicle, FileSaver, Blob) {
         $scope.vehicles = Vehicle.query(function() {
             $scope.ready = true;
         });
@@ -299,6 +299,180 @@ app
             var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
             FileSaver.saveAs(data, 'vehicles.csv');
         };
+    })
+    .controller('vehiclesListCtrl', function($scope, $timeout, $http, $filter, $log, $uibModal, $auth, Vehicle, Department, WorkOrder, User, FileSaver, Blob) {
+        $scope.$auth = $auth;
+        $scope.departments = Department.query(function() {
+            $scope.departments.unshift({
+                name: 'All'
+            });
+            $scope.selected = $scope.departments[0].name;
+            Vehicle.query(function(vehicles) {
+                $scope.ready = true;
+                $scope.sending = false;
+                $scope.vehicles = vehicles;
+                vehicles.forEach(function(vehicle) {
+                    var work_orders = [];
+                    vehicle.work_orders.forEach(function(work_order) {
+                        WorkOrder.get({id: work_order}, function(work_order) {
+                            var who_worked = [];
+                            work_order.who_worked.forEach(function(user) {
+                                User.get({id: user}, function(user) {
+                                    who_worked.push(user);
+                                });
+                            });
+                            work_order._who_worked = who_worked;
+                            work_orders.push(work_order);
+                        });
+                    });
+                    vehicle.work_orders = work_orders;
+                });
+
+                $scope.work = function(work_order) {
+                    $scope.sending = true;
+                    var user_id = $auth.getPayload().user_id;
+                    var index = work_order.who_worked.indexOf(user_id);
+                    if(index === -1)
+                        work_order.who_worked.push(user_id);
+                    else
+                        work_order.who_worked.splice(index, 1);
+                    work_order.$update(function() {
+                        var who_worked = [];
+                        work_order.who_worked.forEach(function(user) {
+                            User.get({id: user}, function(user) {
+                                who_worked.push(user);
+                            });
+                        });
+                        work_order._who_worked = who_worked;
+                        $scope.sending = false;
+                    });
+                };
+
+                $scope.addWorkOrder = function(vehicle) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'work_order.html',
+                        controller: function ($scope, $uibModalInstance, vehicle) {
+
+                            $scope.work_order = new WorkOrder();
+                            $scope.work_order.vehicle = vehicle.id;
+                            $scope.work_order.active = false;
+
+                            $scope.ok = function () {
+                                $uibModalInstance.close({
+                                    work_order: $scope.work_order,
+                                    vehicle: vehicle
+                                });
+                            };
+
+                            $scope.cancel = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'sm',
+                        resolve: {
+                            vehicle: vehicle
+                        }
+                    });
+
+                    modalInstance.result.then(function (data) {
+                        data.work_order.$save(function(work_order) {
+                             data.vehicle.work_orders.push(work_order);
+                        });
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+                /* $scope.takeOne = function(part) {
+                    $scope.sending = true;
+                    part.qty_on_hand --;
+                    part.date = $filter('date')(new Date(), 'yyyy-MM-dd');
+                    part.$update(function() {
+                        alert('success');
+                        $scope.sending = false;
+                        part.isCollapsed = !part.isCollapsed;
+                    });
+                };
+                $scope.addOne = function(part) {
+                    $scope.sending = true;
+                    part.qty_on_hand ++;
+                    part.date = $filter('date')(new Date(), 'yyyy-MM-dd');
+                    part.$update(function() {
+                        alert('success');
+                        $scope.sending = false;
+                        part.isCollapsed = !part.isCollapsed;
+                    });
+                };
+
+                $scope.order = function(part) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'order.html',
+                        controller: function ($scope, $uibModalInstance, part) {
+
+                            $scope.part = part;
+
+                            $scope.ok = function () {
+                                $uibModalInstance.close($scope.qty);
+                            };
+
+                            $scope.cancel = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'sm',
+                        resolve: {
+                            part: part
+                        }
+                    });
+
+                    modalInstance.result.then(function (qty) {
+                        var order = new OnOrder();
+                        order.part = part.id;
+                        order.vendor = part.vendor.id;
+                        order.qty = qty;
+                        order.user = $auth.getPayload().user_id;
+                        order.$save(function() {
+                            part.qty_on_order += qty;
+                            alert('success');
+                        });
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+
+                $scope.showImage = function(part) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'image.html',
+                        controller: function ($scope, $uibModalInstance, part) {
+
+                            $scope.part = part;
+
+                            $scope.ok = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        },
+                        size: 'lg',
+                        resolve: {
+                            part: part
+                        }
+                    });
+                };
+                */
+            });
+
+            $scope.getNumberOfVehicles = function(vehicles, selected) {
+                return $filter('filter')(vehicles, selected == 'All' ? '' : {department: {name: selected}}).length
+            };
+
+            $scope.exportCSV = function(vehicles, selected) {
+                var ps =  $filter('filter')(vehicles, selected == 'All' ? '' : {department: {name: selected}});
+                var csv = json2csv(ps, ["id", "make", "model", "year", "serial", "hours", "next_interval", "interval_hours_due", "engine_make", "engine_model", "engine_serial", "engine_note", "active", "dashboard", "note"]);
+                var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+                FileSaver.saveAs(data, 'vehicles.csv');
+            };
+        });
     })
     .controller('UploadImageModalInstance', function($scope, $timeout, $uibModalInstance, Uploads, Upload){
 

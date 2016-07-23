@@ -84,3 +84,12 @@ class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
 
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+
+class WorkOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkOrder
+
+
