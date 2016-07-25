@@ -444,6 +444,7 @@ app
     .controller('workOrdersActiveCtrl', function($scope, $timeout, $http, $filter, $log, $uibModal, $auth, Vehicle, Department, WorkOrder, User, FileSaver, Blob) {
         $scope.$auth = $auth;
         $scope.active = true;
+        $scope.parseInt = parseInt;
         $scope.vehicles = Vehicle.query(function() {
             $scope.vehicles.unshift({
                 id: 'All',
@@ -536,20 +537,32 @@ app
             });
 
             $scope.getNumberOfWorkOrder = function(workOrders, selected) {
-                return $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: selected, active: $scope.active}).length
+                return $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: parseInt(selected), active: $scope.active}, true).length
             };
 
             $scope.exportCSV = function(workOrders, selected) {
-                var ps =  $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: selected, active: $scope.active});
+                var ps =  $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: parseInt(selected), active: $scope.active}, true);
                 var csv = json2csv(ps, ["id", "number", "problem", "solution", "vehicle", "hours", "datetime", "active", "who_worked", "close_date", "parts_used"]);
                 var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
                 FileSaver.saveAs(data, 'vehicles.csv');
             };
         });
+
+        $scope.getVehicleModel = function(id) {
+            var model;
+            $scope.vehicles.some(function(vehicle) {
+                if(vehicle.id == id) {
+                    model = vehicle.model;
+                    return true;
+                }
+            });
+            return model;
+        };
     })
     .controller('workOrdersClosedCtrl', function($scope, $timeout, $http, $filter, $log, $uibModal, $auth, Vehicle, Department, WorkOrder, User, FileSaver, Blob) {
         $scope.$auth = $auth;
         $scope.active = false;
+        $scope.parseInt = parseInt;
         $scope.vehicles = Vehicle.query(function() {
             $scope.vehicles.unshift({
                 id: 'All',
@@ -642,16 +655,27 @@ app
             });
 
             $scope.getNumberOfWorkOrder = function(workOrders, selected) {
-                return $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: selected, active: $scope.active}).length
+                return $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: parseInt(selected), active: $scope.active}, true).length
             };
 
             $scope.exportCSV = function(workOrders, selected) {
-                var ps =  $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: selected, active: $scope.active});
+                var ps =  $filter('filter')(workOrders, selected == 'All' ? {active: $scope.active} : {vehicle: parseInt(selected), active: $scope.active}, true);
                 var csv = json2csv(ps, ["id", "number", "problem", "solution", "vehicle", "hours", "datetime", "active", "who_worked", "close_date", "parts_used"]);
                 var data = new Blob([csv], { type: 'text/csv;charset=utf-8' });
                 FileSaver.saveAs(data, 'vehicles.csv');
             };
         });
+
+        $scope.getVehicleModel = function(id) {
+            var model;
+            $scope.vehicles.some(function(vehicle) {
+                if(vehicle.id == id) {
+                    model = vehicle.model;
+                    return true;
+                }
+            });
+            return model;
+        };
     })
     .controller('UploadImageModalInstance', function($scope, $timeout, $uibModalInstance, Uploads, Upload){
 

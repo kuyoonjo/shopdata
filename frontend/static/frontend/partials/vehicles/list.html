@@ -41,7 +41,7 @@
                         </div>
                         <br />
                         <div>
-                            <table class="table" ng-repeat="work_order in vehicle._work_orders">
+                            <table class="table" ng-repeat="work_order in vehicle._work_orders | filter:{active: true}">
                                 <thead>
                                     <tr>
                                         <th class="fit">Work Order Number:</th>
