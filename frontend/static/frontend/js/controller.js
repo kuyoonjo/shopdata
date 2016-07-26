@@ -269,8 +269,18 @@ app
             });
         };
     })
-    .controller('vehiclesDashboardCtrl', function($scope, $http, $filter, $log, Vehicle, FileSaver, Blob) {
-        $scope.vehicles = Vehicle.query(function() {
+    .controller('vehiclesDashboardCtrl', function($scope, $http, $filter, $log, Vehicle, WorkOrder, FileSaver, Blob) {
+        $scope.vehicles = Vehicle.query(function(vehicles) {
+            vehicles.forEach(function(vehicle) {
+                vehicle._work_orders = [];
+                vehicle.work_orders.forEach(function(work_order) {
+                    WorkOrder.get({id: work_order}, function(work_order) {
+                        if(work_order.active) {
+                            vehicle._work_orders.push(work_order);
+                        }
+                    });
+                });
+            });
             $scope.ready = true;
         });
 

@@ -12,7 +12,7 @@
     <div class="list-group">
         <div ng-repeat="workOrder in workOrders| filter: (selected == 'All' ? '' : {vehicle: parseInt(selected)}) : true | filter: {active: active} track by $index">
             <a href class="list-group-item" ng-click="workOrder.isCollapsed = !workOrder.isCollapsed"
-               ng-class="{'active': workOrder.isCollapsed}">{{ workOrder.number }}</a>
+               ng-class="{'active': workOrder.isCollapsed}">{{ workOrder.number }} - {{ getVehicleModel(workOrder.vehicle) }}</a>
             <div uib-collapse="!workOrder.isCollapsed">
                 <div class="well">
                     <div class="row">

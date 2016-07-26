@@ -3,19 +3,21 @@
     <div class="pull-right"><a href ng-click="exportCSV(orders)">export .csv</a></div>
     <div class="list-group">
         <div class="list-group-item list-group-item-success clearfix">
-            <div class="col-xs-2">ID</div>
+            <div class="col-xs-1">ID</div>
             <div class="col-xs-2">Part</div>
+            <div class="col-xs-2">Discription</div>
             <div class="col-xs-2">Vendor</div>
-            <div class="col-xs-2">Quantity</div>
+            <div class="col-xs-1">Quantity</div>
             <div class="col-xs-2">User</div>
             <div class="col-xs-2">Datetime</div>
         </div>
         <div ng-repeat="order in orders track by $index">
             <div class="list-group-item clearfix">
-                <div class="col-xs-2">{{ order.id }}</div>
+                <div class="col-xs-1">{{ order.id }}</div>
                 <div class="col-xs-2">{{ order.part.number }}</div>
+                <div class="col-xs-2">{{ order.part.discription }}</div>
                 <div class="col-xs-2">{{ order.part.vendor.name }}</div>
-                <div class="col-xs-2">{{ order.qty }}</div>
+                <div class="col-xs-1">{{ order.qty }}</div>
                 <div class="col-xs-2">{{ order.user.username }}</div>
                 <div class="col-xs-2">{{ order.datetime | date }}</div>
             </div>
