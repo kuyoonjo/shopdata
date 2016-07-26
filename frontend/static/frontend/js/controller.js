@@ -284,6 +284,15 @@ app
             $scope.ready = true;
         });
 
+        $scope.getActives = function(work_orders) {
+            var count = 0;
+            work_orders.forEach(function(work_order) {
+               if(work_order.active)
+                    count ++;
+            });
+            return count;
+        };
+
         $scope.exportCSV = function(vehicles) {
             var vs =  $filter('filter')(vehicles, {dashboard: true});
             var csv = json2csv(vs, [

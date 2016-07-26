@@ -10,7 +10,7 @@
     <label>{{ getNumberOfWorkOrder(workOrders, selected) }} Work Orders:</label>
     <div class="pull-right"><a href ng-click="exportCSV(workOrders, selected)">export .csv</a></div>
     <div class="list-group">
-        <div ng-repeat="workOrder in workOrders| filter: (selected == 'All' ? '' : {vehicle: parseInt(selected)}) : true | filter: {active: active} track by $index">
+        <div ng-repeat="workOrder in workOrders| filter: (selected == 'All' ? {active: active} : {vehicle: parseInt(selected), active: active}) : true track by $index">
             <a href class="list-group-item" ng-click="workOrder.isCollapsed = !workOrder.isCollapsed"
                ng-class="{'active': workOrder.isCollapsed}">{{ workOrder.number }} - {{ getVehicleModel(workOrder.vehicle) }}</a>
             <div uib-collapse="!workOrder.isCollapsed">

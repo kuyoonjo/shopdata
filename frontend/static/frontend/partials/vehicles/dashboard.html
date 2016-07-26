@@ -13,15 +13,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="vehicle in vehicles | filter: {dashboard: true}" ng-if="vehicle._work_orders && vehicle._work_orders.length > 0">
+        <tr ng-repeat="vehicle in vehicles | filter: {dashboard: true}">
             <td>{{ vehicle.model }}</td>
             <td>{{ vehicle.hours }}</td>
             <td>{{ vehicle.next_interval }}</td>
             <td>{{ vehicle.interval_hours_due }}</td>
             <td>{{ vehicle.interval_hours_due - vehicle.hours }}</td>
             <td>
-                [<span ng-repeat="work_order in vehicle._work_orders">
-                {{ work_order.number }}<span ng-if="!$last">, </span></span>]
+                {{ getActives(vehicle._work_orders) }}
             </td>
             <td>{{ vehicle.department.name || '-' }}</td>
         </tr>
